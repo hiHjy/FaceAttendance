@@ -1,0 +1,46 @@
+#ifndef FACEATTENDENCE_H
+#define FACEATTENDENCE_H
+#include <QMainWindow>
+#include <opencv.hpp>
+#include <QThread>
+using namespace cv;
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class FaceAttendence; }
+QT_END_NAMESPACE
+class Work : public QThread {
+    Q_OBJECT
+
+public:
+    Work(QWidget *parent = nullptr, cv::Mat *frame = nullptr, cv::CascadeClassifier *cascade = nullptr);
+    ~Work();
+
+    void run() override;
+    cv::Mat *frame;
+    cv::CascadeClassifier *cascade;
+signals:
+    void sigFaceReady(QString base64);
+};
+
+class FaceAttendence : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    FaceAttendence(QWidget *parent = nullptr);
+    ~FaceAttendence();
+    //定时器事件
+    //void timerEvent(QTimerEvent *e);
+    void updateFrame();
+private:
+    Ui::FaceAttendence *ui;
+    VideoCapture cap;
+    QTimer *timer;
+    Work *face_dect;
+    cv::CascadeClassifier cascade;//一级级联分类器
+    cv::Mat frame;
+
+};
+
+
+#endif // FACEATTENDENCE_H
