@@ -26,12 +26,12 @@ FaceAttendence::FaceAttendence(QWidget *parent)
     }
 
 
-    cap.open("/dev/video0");
+    cap.open("/dev/video1");
     //startTimer(100);
-
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &FaceAttendence::updateFrame);
     timer->start(30); // 大约 30 FPS
+
 
     cap >> frame;
     if (frame.empty()) {
@@ -39,10 +39,10 @@ FaceAttendence::FaceAttendence(QWidget *parent)
         return;
     }
 
-    cascade.load("/home/hjy/Documents/office_meta/FaceAttendence/haarcascade_frontalface_default.xml");
+    cascade.load("./haarcascade_frontalface_default.xml");
 
     face_dect = new Work(this, &frame, &cascade);
-
+    workThreadConnection();
     //face_dect->terminate();
 
     std::vector<uchar> buf;
@@ -62,11 +62,39 @@ FaceAttendence::FaceAttendence(QWidget *parent)
         face_dect->start();
         //faceSearch(jpgBase64, global_token);
     });
+
+
+
+}
+
+void FaceAttendence::workThreadConnection()
+{
     connect(face_dect, &Work::sigFaceReady, this, [=](QString base64) {
         qDebug() << "faceSearch";
         faceSearch(base64, global_token);
     });
 
+    connect(face_dect, &Work::sigFaceTrace, this, [=](int x, int y, bool status) {
+
+        if (status)
+            ui->head_cap_img->move(x, y);
+        else {
+
+            ui->head_cap_img->move(old_x, old_y);
+        }
+
+    });
+
+    connect(face_dect, &Work::sigFaceCrop, this, [this](QImage img ){
+
+        int size =  ui->head_image->width();   // 圆形头像的直径
+        QImage scaled = img.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+        ui->head_image->setPixmap(QPixmap::fromImage(scaled));
+
+        qDebug() << "被调用";
+
+    });
     connect(this, &FaceAttendence::sigFaceVerified, this, [=](UserInfo user){
         //ui->widget_2->setText("认证成功：" + name);
         ui->widget_2->show();
@@ -100,31 +128,12 @@ FaceAttendence::FaceAttendence(QWidget *parent)
 
     });
 
-    connect(face_dect, &Work::sigFaceTrace, this, [=](int x, int y, bool status) {
 
-        if (status)
-            ui->head_cap_img->move(x, y);
-        else {
-
-            ui->head_cap_img->move(old_x, old_y);
-        }
-
-    });
-
-    connect(face_dect, &Work::sigFaceCrop, this, [this](QImage img ){
-
-        int size =  ui->head_image->width();   // 圆形头像的直径
-        QImage scaled = img.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-        ui->head_image->setPixmap(QPixmap::fromImage(scaled));
-
-        qDebug() << "被调用";
-
-    });
-
-
+    qDebug() << "连接信号和槽函数";
+    ui->LE_Name->setText("黄纪元");
 
 }
+
 void FaceAttendence::updateFrame()
 {
     cv::Mat tmp;
@@ -153,8 +162,17 @@ FaceAttendence *FaceAttendence::getInstance()
 
 void FaceAttendence::startCamera()
 {
+
+    ui->head_cap_img->show();
+    ui->head_cap_img->move(old_x, old_y);
+    ui->widget_2->hide();
+    ui->head_image->clear();
+    ui->LE_Dept->clear();
+    ui->LE_Name->clear();
+    ui->LE_Work_ID->clear();
+    ui->LE_identity->clear();
     if (!cap.isOpened()) {
-        cap.open("/dev/video0");
+        cap.open("/dev/video1");
     }
     //    if (cap.isOpened()) {
     //       qDebug() << "摄像头打开失败" << "file:" << __FILE__ << " line:" << __LINE__ << endl;
@@ -162,7 +180,9 @@ void FaceAttendence::startCamera()
     //    }
     if (!face_dect) {
         face_dect = new Work(this, &frame, &cascade);
+        workThreadConnection();
         face_dect->start(); //启动线程
+
     }
     timer->start(33);
 }
@@ -176,9 +196,11 @@ void FaceAttendence::stopCamera()
         face_dect = nullptr;
     }
 
+
     if (cap.isOpened()) {
         cap.release();
     }
+
     timer->stop();
 }
 
@@ -221,7 +243,7 @@ void Work::run()
             work_frame = *frame;
 
         }
-        qDebug() << "work_frame size =" << work_frame.cols << work_frame.rows;
+
         cv::cvtColor(work_frame, gray, cv::COLOR_BGR2GRAY);
 
         // --- 2) Haar 人脸检测 ---
@@ -286,13 +308,7 @@ void Work::run()
         // qDebug() << jpgBase64;
         usleep(100000);
 
-
-
-
-
-
     }
-
 
 }
 

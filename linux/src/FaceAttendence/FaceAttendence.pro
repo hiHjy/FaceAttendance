@@ -15,12 +15,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 #添加opencv，seetaface头文件
-INCLUDEPATH += /opt/opencv4.5.2/include
-INCLUDEPATH += /opt/opencv4.5.2/include/opencv4/opencv2
-INCLUDEPATH += /opt/opencv4.5.2/include/opencv4
+INCLUDEPATH += /opt/opencv4.5.2-arm/include
+INCLUDEPATH += /opt/opencv4.5.2-arm/include/opencv4/opencv2
+INCLUDEPATH += /opt/opencv4.5.2-arm/include/opencv4
 
 #添加opencv，seetace的库
-LIBS += -L/opt/opencv4.5.2/lib -lopencv_world
+LIBS += -L/opt/opencv4.5.2-arm/lib -lopencv_world
 SOURCES += \
     databasemannager.cpp \
     face_api.cpp \

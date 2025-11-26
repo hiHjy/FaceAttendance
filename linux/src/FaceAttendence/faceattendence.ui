@@ -3,7 +3,7 @@
  <class>FaceAttendence</class>
  <widget class="QMainWindow" name="FaceAttendence">
   <property name="enabled">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="geometry">
    <rect>
@@ -17,9 +17,12 @@
    <string>FaceAttendence</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <widget class="QWidget" name="camera" native="true">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -154,6 +157,9 @@ border:none;</string>
      </property>
     </widget>
     <widget class="QLabel" name="videoLb">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>0</x>

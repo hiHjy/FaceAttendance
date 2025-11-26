@@ -1,5 +1,7 @@
 #include "face_api.h"
 #include <QMessageBox>
+#include <QDebug>
+#include <QSsl>
 #include <register.h>
 QString global_token = "";
 // 百度AI开放平台的API认证信息
@@ -16,8 +18,13 @@ void getAccessToken(std::function<void(QString)> callback)
     QNetworkAccessManager* manager = new QNetworkAccessManager;
 
     // 设置请求的URL - 百度AI的令牌获取接口
+
     QUrl url("https://aip.baidubce.com/oauth/2.0/token");
     QNetworkRequest request(url);
+    QSslConfiguration config =QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::AnyProtocol);
+    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(config);
 
     // 设置请求头，指定内容类型为表单数据
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -71,6 +78,10 @@ int faceSearch(QString base64Image, QString token)
 
     // 创建网络请求对象
     QNetworkRequest request(url);
+    QSslConfiguration config =QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::AnyProtocol);
+    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(config);
     // 设置请求头，指定内容类型为JSON
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -89,7 +100,7 @@ int faceSearch(QString base64Image, QString token)
     // 连接网络请求完成信号
     QObject::connect(manager, &QNetworkAccessManager::finished,
                      [](QNetworkReply* reply)
-    {
+    {   qDebug() << "Network error:" << reply->error() << reply->errorString();
         // 读取返回的识别结果
         QString result = reply->readAll();
 
@@ -129,6 +140,10 @@ void faceRegister(QString base64Image, QString token,
     QNetworkAccessManager* manager = new QNetworkAccessManager;
     qDebug() << "faceRegister is called" << endl;
     QNetworkRequest request(QUrl("https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add?access_token=" + token));
+    QSslConfiguration config =QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::AnyProtocol);
+    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(config);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject params;
@@ -152,8 +167,8 @@ void faceRegister(QString base64Image, QString token,
             //qDebug() << "----" << user_id << endl;
             // 存数据库
             DatabaseManager::getInstance()->insertPersonInfo(
-                workId, identity, workId, name, imgPath, dept
-            );
+                        workId, identity, workId, name, imgPath, dept
+                        );
 
             QMessageBox::information(nullptr, "成功", "注册成功！");
 

@@ -22,6 +22,8 @@ public:
     cv::Mat *frame;
     cv::CascadeClassifier *cascade;
     QMutex  *frameMutex;
+
+
 signals:
     void sigFaceReady(QString base64);
     void sigFaceTrace(int x, int y, bool status);
@@ -45,6 +47,7 @@ public:
     static FaceAttendence *getInstance();
     void startCamera();
     void stopCamera();
+    void workThreadConnection();
 signals:
     void sigFaceVerified(UserInfo user);
 

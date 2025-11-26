@@ -95,7 +95,7 @@ void Register::on_Btn_Cap_clicked()
     if (ui->Btn_Cap->text() == "打开摄像头") {
         ui->Btn_Cap->setText("关闭摄像头");
 
-        if (!cap.open("/dev/video0")) {
+        if (!cap.open("/dev/video1")) {
             QMessageBox::warning(this, "错误", "摄像头打开失败");
             return;
         }
