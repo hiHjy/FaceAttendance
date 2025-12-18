@@ -1,12 +1,13 @@
 #include "faceattendence.h"
 #include "ui_faceattendence.h"
-#include <QDebug>
+
 #include <QFile>
 #include <QDateTime>
 #include <QTimer>
 #include <QByteArray>
 #include "face_api.h"
-
+#include <QMetaType>
+Q_DECLARE_METATYPE(cv::Mat)
 
 FaceAttendence* FaceAttendence::self = nullptr;
 
@@ -15,6 +16,7 @@ FaceAttendence::FaceAttendence(QWidget *parent)
     , ui(new Ui::FaceAttendence)
 {
     ui->setupUi(this);
+    qRegisterMetaType<cv::Mat>("cv::Mat");
     self = this;
     ui->widget_2->hide();
     old_x = ui->head_cap_img->x();
@@ -69,9 +71,20 @@ FaceAttendence::FaceAttendence(QWidget *parent)
 
 void FaceAttendence::workThreadConnection()
 {
-    connect(face_dect, &Work::sigFaceReady, this, [=](QString base64) {
-        qDebug() << "faceSearch";
+    connect(face_dect, &Work::sigFaceReady, this, [=](QString base64, cv::Mat frame) {
+        qDebug() << "connect faceSearch";
+        {
+            QMutexLocker loker(&this->frameSuccessMutex);
+            this->frame_success = frame.clone();
+
+        }
         faceSearch(base64, global_token);
+        //        qDebug() << "frame：data： " << frame.data << endl;
+        //        qDebug() << "frame_success：data： " << frame_success.data << endl;
+        //        if (status == true) {
+        //            frame_success = frame;
+        //        }
+
     });
 
     connect(face_dect, &Work::sigFaceTrace, this, [=](int x, int y, bool status) {
@@ -85,14 +98,23 @@ void FaceAttendence::workThreadConnection()
 
     });
 
-    connect(face_dect, &Work::sigFaceCrop, this, [this](QImage img ){
+    connect(this, &FaceAttendence::sigFaceCrop, this, [this](QImage img ){
 
         int size =  ui->head_image->width();   // 圆形头像的直径
         QImage scaled = img.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
 
         ui->head_image->setPixmap(QPixmap::fromImage(scaled));
+        //        FaceAttendence::getInstance()->status = false;
+        //        FaceAttendence::getInstance()->frame_success.data = 0x0;
+        {
+            QMutexLocker locker(&frameSuccessMutex);
+            frame_success.release();
+        }
 
-        qDebug() << "被调用";
+
+        this->setStatus(false);
+
+        qDebug() << "sigFaceCrop::被调用";
 
     });
     connect(this, &FaceAttendence::sigFaceVerified, this, [=](UserInfo user){
@@ -128,9 +150,65 @@ void FaceAttendence::workThreadConnection()
 
     });
 
+    connect(this, &FaceAttendence::sigCropReady, this, [=](){
 
+
+        qDebug() << "切割调用";
+        cv::Mat candidate;
+        {
+            QMutexLocker locker(&FaceAttendence::getInstance()->frameSuccessMutex);
+            candidate = FaceAttendence::getInstance()->frame_success;
+        }
+        cv::Mat gray;
+        std::vector<cv::Rect> faces;
+        if (candidate.empty()) {
+            qDebug() << "候选帧为空";
+            return;
+        }
+        if (candidate.empty()) {
+
+            qDebug() << "line:" << __LINE__
+                     << "fun:"  << __FUNCTION__
+                     <<"file:"  << __FILE__
+                     << "candidate empty";
+        }
+        cv::cvtColor(candidate, gray, cv::COLOR_BGR2GRAY);
+        cascade.detectMultiScale(gray, faces);
+        cv::Rect faceRect;
+        if (faces.size() > 0) {
+            faceRect = faces[0];
+
+            for(cv::Rect &face : faces) {
+                if (faceRect.area() < face.area()) {
+                    faceRect = face;
+                }
+            }
+
+            faceRect &= cv::Rect(0, 0, candidate.cols, candidate.rows);
+            cv::Mat faceROI = candidate(faceRect).clone();
+
+            cv::Mat rgb;
+            if (faceROI.empty()) {
+
+                qDebug() << "line:" << __LINE__
+                         << "fun:"  << __FUNCTION__
+                         <<"file:"  << __FILE__
+                         << "faceROI empty";
+            }
+            cv::cvtColor(faceROI, rgb, cv::COLOR_BGR2RGB);
+            QImage img((const uchar*)rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888);
+            emit sigFaceCrop(img);
+
+
+
+
+            qDebug()<<"end1111";
+        }
+
+
+    });
     qDebug() << "连接信号和槽函数";
-    ui->LE_Name->setText("黄纪元");
+
 
 }
 
@@ -143,7 +221,13 @@ void FaceAttendence::updateFrame()
         QMutexLocker locker(&frameMutex);
         tmp = frame;
     }
+    if (tmp.empty()) {
 
+        qDebug() << "line:" << __LINE__
+                 << "fun:"  << __FUNCTION__
+                 <<"file:"  << __FILE__
+                 << "tmp empty";
+    }
     cv::cvtColor(tmp, tmp, cv::COLOR_BGR2RGB);
     QImage image(tmp.data, tmp.cols, tmp.rows,  tmp.step1(),QImage::Format_RGB888);
 
@@ -196,12 +280,14 @@ void FaceAttendence::stopCamera()
         face_dect = nullptr;
     }
 
-
-    if (cap.isOpened()) {
-        cap.release();
-    }
-
     timer->stop();
+    while(cap.isOpened())
+        cap.release();
+
+    qDebug() << "摄像头已经关闭" << endl;
+
+
+
 }
 
 
@@ -232,6 +318,15 @@ FaceAttendence::~FaceAttendence()
 
 }
 
+void FaceAttendence::setStatus(bool v)
+{
+
+
+    status.store(v);
+    qDebug() << "setStatus: "  << v << "当前线程:" << QThread::currentThread();
+
+}
+
 void Work::run()
 {
     std::cout << "work start" << std::endl;
@@ -244,6 +339,14 @@ void Work::run()
 
         }
 
+
+        if (work_frame.empty()) {
+
+            qDebug() << "line:" << __LINE__
+                     << "fun:"  << __FUNCTION__
+                     <<"file:"  << __FILE__
+                     << "work_frame empty";
+        }
         cv::cvtColor(work_frame, gray, cv::COLOR_BGR2GRAY);
 
         // --- 2) Haar 人脸检测 ---
@@ -267,23 +370,26 @@ void Work::run()
         }
 
 
-        if (faces.size() > 0) {
-            qDebug() << "检测到人脸" << endl;
+        qDebug() << "检测到人脸" << endl;
 
-            //cv::rectangle(*this->frame, face, cv::Scalar(0, 255, 0), 2);
-            emit sigFaceTrace(rect.x, rect.y, true);
-            cv::Rect faceRect = rect;
-
-            faceRect &= cv::Rect(0, 0, work_frame.cols, work_frame.rows);
-            cv::Mat faceROI = work_frame(faceRect).clone();
+        //cv::rectangle(*this->frame, face, cv::Scalar(0, 255, 0), 2);
+        emit sigFaceTrace(rect.x, rect.y, true);
+        qDebug() << "status：" << FaceAttendence::getInstance()->status.load() << "frame empty:" << FaceAttendence::getInstance()->frame_success.empty() << endl;
 
 
-            cv::Mat rgb;
-            cv::cvtColor(faceROI, rgb, cv::COLOR_BGR2RGB);
-            QImage img((const uchar*)rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888);
-            emit sigFaceCrop(img);
-            qDebug()<<"end";
-        }
+
+        //        cv::Rect faceRect = rect;
+
+        //        faceRect &= cv::Rect(0, 0, work_frame.cols, work_frame.rows);
+        //        cv::Mat faceROI = work_frame(faceRect).clone();
+
+
+        //        cv::Mat rgb;
+        //        cv::cvtColor(faceROI, rgb, cv::COLOR_BGR2RGB);
+        //        QImage img((const uchar*)rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888);
+        //        emit sigFaceCrop(img);
+        //        qDebug()<<"end";
+
 
 
         static qint64 last = 0;
@@ -304,13 +410,14 @@ void Work::run()
         QString jpgBase64 = jpgData.toBase64();
         qDebug() << "Base64 长度：" << jpgBase64.length();
         //faceSearch(jpgBase64, global_token);
-        emit sigFaceReady(jpgBase64);
+        emit sigFaceReady(jpgBase64, work_frame);
         // qDebug() << jpgBase64;
         usleep(100000);
 
     }
 
 }
+
 
 Work::~Work()
 {

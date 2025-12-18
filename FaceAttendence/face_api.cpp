@@ -122,6 +122,10 @@ int faceSearch(QString base64Image, QString token)
             qDebug() << "user_id:" << user_id;
             auto info = DatabaseManager::getInstance()->getInfoByUID(user_id);
             emit FaceAttendence :: getInstance()->sigFaceVerified(info);
+//            FaceAttendence::getInstance()->status = true;
+//            FaceAttendence::getInstance()->setStatus(true);
+//            qDebug() << "faceSerch修改后status：" << FaceAttendence::getInstance()->status;
+            emit FaceAttendence::getInstance()->sigCropReady();
         }
 
         // 清理回复对象

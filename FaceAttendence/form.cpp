@@ -16,8 +16,10 @@ Form::~Form()
 void Form::on_tabWidget_currentChanged(int index)
 {
     if (index == 0) {
+
         FaceAttendence::getInstance()->startCamera();
     } else {
         FaceAttendence::getInstance()->stopCamera();
+
     }
 }

@@ -121,6 +121,13 @@ void Register::timerEvent(QTimerEvent *e)
     }
 
     // OpenCV 默认 BGR，需要转成 RGB 才能给 QImage
+    if (image.empty()) {
+
+        qDebug() << "line:" << __LINE__
+                 << "fun:"  << __FUNCTION__
+                 <<"file:"  << __FILE__
+                 << "image empty";
+    }
     cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
 
     // 用 QImage 包装 Mat 的像素数据
