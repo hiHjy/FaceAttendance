@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>821</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="tab_record">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="Register" name="tab_register">
+       <attribute name="title">
+        <string>注册</string>
+       </attribute>
+      </widget>
+      <widget class="Record" name="tab_record_2">
+       <attribute name="title">
+        <string>记录</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+     <widget class="QPushButton" name="btn_exit">
+      <property name="minimumSize">
+       <size>
+        <width>80</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>70</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>退出管理</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Register</class>
+   <extends>QWidget</extends>
+   <header location="global">register.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Record</class>
+   <extends>QWidget</extends>
+   <header location="global">record.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QMutex>
 #include <atomic>
-#include <QQuickWidget>
+
 using namespace cv;
 int faceSearch(QString base64Image, QString token);
 
@@ -68,7 +68,7 @@ signals:
 
 private:
     Ui::FaceAttendence *ui;
-    QQuickWidget *keyboardWidget;
+   
     QTimer *timer;
 
     Work *face_dect;

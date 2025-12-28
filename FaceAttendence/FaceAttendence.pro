@@ -1,4 +1,4 @@
-QT       += core gui multimedia multimediawidgets sql
+QT       += core gui multimedia multimediawidgets sql qml quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,23 +23,36 @@ INCLUDEPATH += /opt/opencv4.5.2-arm/include/opencv4
 LIBS += -L/opt/opencv4.5.2-arm/lib -lopencv_world
 SOURCES += \
     databasemannager.cpp \
+    dialog_admin.cpp \
     face_api.cpp \
     form.cpp \
     main.cpp \
     faceattendence.cpp \
-    register.cpp
+    record.cpp \
+    register.cpp \
+    widget_login_page.cpp \
+    widget_system.cpp
 
 HEADERS += \
     databasemannager.h \
+    dialog_admin.h \
     face_api.h \
     faceattendence.h \
     form.h \
-    register.h
+    record.h \
+    register.h \
+    widget_login_page.h \
+    widget_system.h
+
 
 FORMS += \
+    dialog_admin.ui \
     faceattendence.ui \
     form.ui \
-    register.ui
+    record.ui \
+    register.ui \
+    widget_login_page.ui \
+    widget_system.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -47,4 +60,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    image.qrc
+    img.qrc
+
+DISTFILES +=

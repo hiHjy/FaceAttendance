@@ -195,7 +195,7 @@ border:none;</string>
 
 QWidget#headline{
 	
-	font: 24pt &quot;微软雅黑&quot;;
+	font: 24pt &quot;Ubuntu&quot;;
 	
 	color: rgb(255, 255, 255);
 
@@ -215,6 +215,15 @@ QWidget#head_image{
        <width>301</width>
        <height>61</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Ubuntu</family>
+       <pointsize>24</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>人脸识别系统</string>
@@ -248,6 +257,9 @@ QWidget#head_image{
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QWidget" name="widget_3" native="true">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="styleSheet">
          <string notr="true">QWidget {
     border: 1px solid #313236;
@@ -260,14 +272,13 @@ QWidget#head_image{
 
 QLabel {
     border: none;
-    font: bold 12pt &quot;微软雅黑&quot;;
     color: rgb(125, 100, 127);
     
 }
 QLineEdit {
 	border:none;
 	
-	font: bold 10pt &quot;微软雅黑&quot;;
+	font: bold 10pt &quot;Ubuntu&quot;;
 
 	color:rgb(255,255,255)
 
@@ -325,7 +336,7 @@ QLineEdit {
 
 QLabel {
     border: none;
-    font: bold 12pt &quot;微软雅黑&quot;;
+    font: bold 12pt &quot;Ubuntu&quot;;
     color: rgb(125, 100, 127);
   
     
@@ -333,7 +344,7 @@ QLabel {
 QLineEdit {
 	border:none;
 	
-	font: bold 10pt &quot;微软雅黑&quot;;
+	font: bold 10pt &quot;Ubuntu&quot;;
 
  
 	color:rgb(255,255,255)
@@ -353,6 +364,15 @@ QLineEdit {
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <family>Ubuntu</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <italic>false</italic>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
              <string>工号</string>
             </property>
@@ -360,6 +380,9 @@ QLineEdit {
           </item>
           <item>
            <widget class="QLineEdit" name="LE_Work_ID">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -392,7 +415,7 @@ QLineEdit {
 
 QLabel {
     border: none;
-    font: bold 12pt &quot;微软雅黑&quot;;
+    font: bold 12pt &quot;Ubuntu&quot;;
     color: rgb(125, 100, 127);
    
     
@@ -400,7 +423,7 @@ QLabel {
 QLineEdit {
 	border:none;
 	
-	font: bold 10pt &quot;微软雅黑&quot;;
+	font: bold 10pt &quot;Ubuntu&quot;;
 
   
 	color:rgb(255,255,255)
@@ -420,6 +443,15 @@ QLineEdit {
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QLabel" name="label_9">
+            <property name="font">
+             <font>
+              <family>Ubuntu</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <italic>false</italic>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
              <string>学院</string>
             </property>
@@ -427,6 +459,9 @@ QLineEdit {
           </item>
           <item>
            <widget class="QLineEdit" name="LE_Dept">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -459,7 +494,7 @@ QLineEdit {
 
 QLabel {
     border: none;
-    font: bold 12pt &quot;微软雅黑&quot;;
+    font: bold 12pt &quot;Ubuntu&quot;;
     color: rgb(125, 100, 127);
    
     
@@ -467,7 +502,7 @@ QLabel {
 QLineEdit {
 	border:none;
 	
-	font: bold 10pt &quot;微软雅黑&quot;;
+	font: bold 10pt &quot;Ubuntu&quot;;
 
 	color:rgb(255,255,255)
 
@@ -493,6 +528,9 @@ QLineEdit {
           </item>
           <item>
            <widget class="QLineEdit" name="LE_Name">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>

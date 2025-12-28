@@ -3,21 +3,29 @@
 #include <QFileDialog>
 #include <QtDebug>
 #include <QMessageBox>
+#include <QtQuickWidgets>
 #include "face_api.h"
 #include "databasemanager.h"
+
 
 Register::Register(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+
+
     self = this;
-    DatabaseManager::getInstance()->initDataBase();
+//DatabaseManager::getInstance()->initDataBase();
+
+
 }
+
+
 Register* Register::self = nullptr;
 Register::~Register()
 {
-    delete self;
+
     delete ui;
 }
 
@@ -36,6 +44,9 @@ void Register::on_Btn_Clear_clicked()
     ui->Le_Path->clear();
     ui->Le_Dept->clear();
     ui->Lb_Img->clear();
+    QPixmap pixmap(":/cam.png");
+    pixmap = pixmap.scaled(ui->Lb_Img->size(), Qt::KeepAspectRatio);
+    ui->Lb_Img->setPixmap(pixmap);
 
 }
 
@@ -43,13 +54,12 @@ void Register::on_Btn_AddImg_clicked()
 {
     QString filePath = QFileDialog::getOpenFileName(this);
 
-    //qDebug() << filePath << endl;
+
     ui->Le_Path->setText(filePath);
 
     QPixmap mmp(filePath);
     mmp = mmp.scaled(384, 387);
-    //    mmp = mmp.scaledToWidth(ui->Lb_Img->width());
-    //    mmp = mmp.scaledToHeight(ui->Lb_Img->height());
+
     ui->Lb_Img->setPixmap(mmp);
 }
 
@@ -94,7 +104,9 @@ void Register::on_Btn_Cap_clicked()
 
     if (ui->Btn_Cap->text() == "打开摄像头") {
         ui->Btn_Cap->setText("关闭摄像头");
+        ui->Lb_Img->styleSheet().clear();
 
+        ui->Lb_Img->setStyleSheet("");  // 等价写法
         if (!cap.open("/dev/video1")) {
             QMessageBox::warning(this, "错误", "摄像头打开失败");
             return;
@@ -106,6 +118,9 @@ void Register::on_Btn_Cap_clicked()
     } else {
         ui->Btn_Cap->setText("打开摄像头");
         ui->Lb_Img->clear();
+        QPixmap pixmap(":/cam.png");
+        pixmap = pixmap.scaled(ui->Lb_Img->size(), Qt::KeepAspectRatio);
+        ui->Lb_Img->setPixmap(pixmap);
         killTimer(timerID);
         cap.release();
     }
@@ -128,6 +143,7 @@ void Register::timerEvent(QTimerEvent *e)
                  <<"file:"  << __FILE__
                  << "image empty";
     }
+
     cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
 
     // 用 QImage 包装 Mat 的像素数据

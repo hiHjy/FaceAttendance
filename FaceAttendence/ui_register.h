@@ -49,6 +49,7 @@ public:
     QPushButton *Btn_AddImg;
     QPushButton *Btn_Cap;
     QPushButton *Btn_Shot;
+    QWidget *widget;
 
     void setupUi(QWidget *Register)
     {
@@ -59,11 +60,12 @@ public:
         Register->setStyleSheet(QString::fromUtf8("background-color: rgb(243, 243, 243);"));
         layoutWidget = new QWidget(Register);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 0, 801, 451));
+        layoutWidget->setGeometry(QRect(0, 0, 811, 411));
         horizontalLayout_3 = new QHBoxLayout(layoutWidget);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_3->setContentsMargins(5, 0, 5, 0);
         verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -193,7 +195,8 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(Lb_Img->sizePolicy().hasHeightForWidth());
         Lb_Img->setSizePolicy(sizePolicy2);
-        Lb_Img->setStyleSheet(QString::fromUtf8("background-color: rgb(211, 215, 207);"));
+        Lb_Img->setStyleSheet(QString::fromUtf8("image: url(:/cam.png);\n"
+""));
 
         verticalLayout_2->addWidget(Lb_Img);
 
@@ -211,6 +214,7 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(Btn_AddImg->sizePolicy().hasHeightForWidth());
         Btn_AddImg->setSizePolicy(sizePolicy3);
+        Btn_AddImg->setMinimumSize(QSize(0, 50));
 
         horizontalLayout_7->addWidget(Btn_AddImg);
 
@@ -218,6 +222,7 @@ public:
         Btn_Cap->setObjectName(QString::fromUtf8("Btn_Cap"));
         sizePolicy3.setHeightForWidth(Btn_Cap->sizePolicy().hasHeightForWidth());
         Btn_Cap->setSizePolicy(sizePolicy3);
+        Btn_Cap->setMinimumSize(QSize(0, 50));
 
         horizontalLayout_7->addWidget(Btn_Cap);
 
@@ -225,6 +230,7 @@ public:
         Btn_Shot->setObjectName(QString::fromUtf8("Btn_Shot"));
         sizePolicy3.setHeightForWidth(Btn_Shot->sizePolicy().hasHeightForWidth());
         Btn_Shot->setSizePolicy(sizePolicy3);
+        Btn_Shot->setMinimumSize(QSize(0, 50));
 
         horizontalLayout_7->addWidget(Btn_Shot);
 
@@ -234,6 +240,9 @@ public:
 
         horizontalLayout_3->addLayout(verticalLayout_2);
 
+        widget = new QWidget(Register);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(510, 620, 120, 80));
 
         retranslateUi(Register);
 

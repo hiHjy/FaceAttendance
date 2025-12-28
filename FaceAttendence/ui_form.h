@@ -14,7 +14,8 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
 #include <faceattendence.h>
-#include <register.h>
+#include <widget_login_page.h>
+#include <widget_system.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -23,7 +24,8 @@ class Ui_Form
 public:
     QTabWidget *tabWidget;
     FaceAttendence *Face_Identifaction;
-    Register *Face_Register;
+    Widget_System *System;
+    Widget_Login_Page *Face_Register;
 
     void setupUi(QWidget *Form)
     {
@@ -36,13 +38,16 @@ public:
         Face_Identifaction = new FaceAttendence();
         Face_Identifaction->setObjectName(QString::fromUtf8("Face_Identifaction"));
         tabWidget->addTab(Face_Identifaction, QString());
-        Face_Register = new Register();
+        System = new Widget_System();
+        System->setObjectName(QString::fromUtf8("System"));
+        tabWidget->addTab(System, QString());
+        Face_Register = new Widget_Login_Page();
         Face_Register->setObjectName(QString::fromUtf8("Face_Register"));
         tabWidget->addTab(Face_Register, QString());
 
         retranslateUi(Form);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(Form);
@@ -52,7 +57,8 @@ public:
     {
         Form->setWindowTitle(QApplication::translate("Form", "Form", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Face_Identifaction), QApplication::translate("Form", "\344\272\272\350\204\270\350\257\206\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Face_Register), QApplication::translate("Form", "\346\263\250\345\206\214", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(System), QApplication::translate("Form", "\347\263\273\347\273\237", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Face_Register), QApplication::translate("Form", "\347\256\241\347\220\206", nullptr));
     } // retranslateUi
 
 };

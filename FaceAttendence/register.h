@@ -3,18 +3,23 @@
 
 #include <QWidget>
 #include <opencv.hpp>
+#include <QtQuickWidgets>
+#include <QEvent>
 namespace Ui {
 class Register;
 }
+
 
 class Register : public QWidget
 {
     Q_OBJECT
 
 public:
+
     explicit Register(QWidget *parent = nullptr);
     ~Register();
    static Register* getInstance();
+
 
 public slots:
     void on_Btn_Clear_clicked();
@@ -29,6 +34,8 @@ private slots:
     void on_Btn_Shot_clicked();
 
 private:
+
+
     Ui::Register *ui;
     static Register* self;
     int timerID;

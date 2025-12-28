@@ -10,8 +10,11 @@ Form::Form(QWidget *parent) :
 
 Form::~Form()
 {
+
     delete ui;
 }
+
+
 
 void Form::on_tabWidget_currentChanged(int index)
 {

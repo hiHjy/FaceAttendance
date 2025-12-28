@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>cam.png</file>
+        <file>manager.png</file>
+        <file>power-on.png</file>
+        <file>power.png</file>
+        <file>global-network.png</file>
+        <file>configuration.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1"/>
+</RCC>

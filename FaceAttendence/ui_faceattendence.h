@@ -146,7 +146,7 @@ public:
 "\n"
 "QWidget#headline{\n"
 "	\n"
-"	font: 24pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"	font: 24pt \"Ubuntu\";\n"
 "	\n"
 "	color: rgb(255, 255, 255);\n"
 "\n"
@@ -160,6 +160,13 @@ public:
         headline = new QLabel(widget);
         headline->setObjectName(QString::fromUtf8("headline"));
         headline->setGeometry(QRect(10, 0, 301, 61));
+        QFont font;
+        font.setFamily(QString::fromUtf8("Ubuntu"));
+        font.setPointSize(24);
+        font.setBold(false);
+        font.setItalic(false);
+        font.setWeight(50);
+        headline->setFont(font);
         headline->setAlignment(Qt::AlignCenter);
         head_image = new QLabel(widget);
         head_image->setObjectName(QString::fromUtf8("head_image"));
@@ -172,6 +179,7 @@ public:
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         widget_3 = new QWidget(layoutWidget);
         widget_3->setObjectName(QString::fromUtf8("widget_3"));
+        widget_3->setEnabled(false);
         widget_3->setStyleSheet(QString::fromUtf8("QWidget {\n"
 "    border: 1px solid #313236;\n"
 "    padding: 5px; /* \346\267\273\345\212\240\345\206\205\350\276\271\350\267\235 */\n"
@@ -183,14 +191,13 @@ public:
 "\n"
 "QLabel {\n"
 "    border: none;\n"
-"    font: bold 12pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
 "    color: rgb(125, 100, 127);\n"
 "    \n"
 "}\n"
 "QLineEdit {\n"
 "	border:none;\n"
 "	\n"
-"	font: bold 10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"	font: bold 10pt \"Ubuntu\";\n"
 "\n"
 "	color:rgb(255,255,255)\n"
 "\n"
@@ -234,7 +241,7 @@ public:
 "\n"
 "QLabel {\n"
 "    border: none;\n"
-"    font: bold 12pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"    font: bold 12pt \"Ubuntu\";\n"
 "    color: rgb(125, 100, 127);\n"
 "  \n"
 "    \n"
@@ -242,7 +249,7 @@ public:
 "QLineEdit {\n"
 "	border:none;\n"
 "	\n"
-"	font: bold 10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"	font: bold 10pt \"Ubuntu\";\n"
 "\n"
 " \n"
 "	color:rgb(255,255,255)\n"
@@ -257,11 +264,19 @@ public:
         horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
         label_6 = new QLabel(layoutWidget_4);
         label_6->setObjectName(QString::fromUtf8("label_6"));
+        QFont font1;
+        font1.setFamily(QString::fromUtf8("Ubuntu"));
+        font1.setPointSize(12);
+        font1.setBold(true);
+        font1.setItalic(false);
+        font1.setWeight(75);
+        label_6->setFont(font1);
 
         horizontalLayout_6->addWidget(label_6);
 
         LE_Work_ID = new QLineEdit(layoutWidget_4);
         LE_Work_ID->setObjectName(QString::fromUtf8("LE_Work_ID"));
+        LE_Work_ID->setEnabled(false);
         sizePolicy1.setHeightForWidth(LE_Work_ID->sizePolicy().hasHeightForWidth());
         LE_Work_ID->setSizePolicy(sizePolicy1);
         LE_Work_ID->setAlignment(Qt::AlignCenter);
@@ -284,7 +299,7 @@ public:
 "\n"
 "QLabel {\n"
 "    border: none;\n"
-"    font: bold 12pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"    font: bold 12pt \"Ubuntu\";\n"
 "    color: rgb(125, 100, 127);\n"
 "   \n"
 "    \n"
@@ -292,7 +307,7 @@ public:
 "QLineEdit {\n"
 "	border:none;\n"
 "	\n"
-"	font: bold 10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"	font: bold 10pt \"Ubuntu\";\n"
 "\n"
 "  \n"
 "	color:rgb(255,255,255)\n"
@@ -307,11 +322,13 @@ public:
         horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
         label_9 = new QLabel(layoutWidget_7);
         label_9->setObjectName(QString::fromUtf8("label_9"));
+        label_9->setFont(font1);
 
         horizontalLayout_9->addWidget(label_9);
 
         LE_Dept = new QLineEdit(layoutWidget_7);
         LE_Dept->setObjectName(QString::fromUtf8("LE_Dept"));
+        LE_Dept->setEnabled(false);
         sizePolicy1.setHeightForWidth(LE_Dept->sizePolicy().hasHeightForWidth());
         LE_Dept->setSizePolicy(sizePolicy1);
         LE_Dept->setAlignment(Qt::AlignCenter);
@@ -334,7 +351,7 @@ public:
 "\n"
 "QLabel {\n"
 "    border: none;\n"
-"    font: bold 12pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"    font: bold 12pt \"Ubuntu\";\n"
 "    color: rgb(125, 100, 127);\n"
 "   \n"
 "    \n"
@@ -342,7 +359,7 @@ public:
 "QLineEdit {\n"
 "	border:none;\n"
 "	\n"
-"	font: bold 10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"	font: bold 10pt \"Ubuntu\";\n"
 "\n"
 "	color:rgb(255,255,255)\n"
 "\n"
@@ -361,6 +378,7 @@ public:
 
         LE_Name = new QLineEdit(layoutWidget_8);
         LE_Name->setObjectName(QString::fromUtf8("LE_Name"));
+        LE_Name->setEnabled(false);
         sizePolicy1.setHeightForWidth(LE_Name->sizePolicy().hasHeightForWidth());
         LE_Name->setSizePolicy(sizePolicy1);
         LE_Name->setAlignment(Qt::AlignCenter);

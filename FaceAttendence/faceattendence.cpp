@@ -16,6 +16,9 @@ FaceAttendence::FaceAttendence(QWidget *parent)
     , ui(new Ui::FaceAttendence)
 {
     ui->setupUi(this);
+
+
+    // ----------------------------------------------------------------------
     qRegisterMetaType<cv::Mat>("cv::Mat");
     self = this;
     ui->widget_2->hide();
@@ -32,7 +35,7 @@ FaceAttendence::FaceAttendence(QWidget *parent)
     //startTimer(100);
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &FaceAttendence::updateFrame);
-    timer->start(30); // 大约 30 FPS
+    timer->start(100); // 大约 30 FPS
 
 
     cap >> frame;
@@ -144,6 +147,8 @@ void FaceAttendence::workThreadConnection()
                 return;
             }
 
+            QTimer::singleShot(5000, this, &FaceAttendence::startCamera);
+
 
 
         }
@@ -170,10 +175,18 @@ void FaceAttendence::workThreadConnection()
             qDebug() << "line:" << __LINE__
                      << "fun:"  << __FUNCTION__
                      <<"file:"  << __FILE__
-                     << "candidate empty";
+                    << "candidate empty";
         }
         cv::cvtColor(candidate, gray, cv::COLOR_BGR2GRAY);
-        cascade.detectMultiScale(gray, faces);
+        cascade.detectMultiScale(
+                    gray,
+                    faces,
+                    1.2,        // scaleFactor
+                    5,          // minNeighbors
+                    0,
+                    cv::Size(60, 60),   // minSize
+                    cv::Size()          // maxSize
+                    );
         cv::Rect faceRect;
         if (faces.size() > 0) {
             faceRect = faces[0];
@@ -193,7 +206,7 @@ void FaceAttendence::workThreadConnection()
                 qDebug() << "line:" << __LINE__
                          << "fun:"  << __FUNCTION__
                          <<"file:"  << __FILE__
-                         << "faceROI empty";
+                        << "faceROI empty";
             }
             cv::cvtColor(faceROI, rgb, cv::COLOR_BGR2RGB);
             QImage img((const uchar*)rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888);
@@ -226,7 +239,7 @@ void FaceAttendence::updateFrame()
         qDebug() << "line:" << __LINE__
                  << "fun:"  << __FUNCTION__
                  <<"file:"  << __FILE__
-                 << "tmp empty";
+                << "tmp empty";
     }
     cv::cvtColor(tmp, tmp, cv::COLOR_BGR2RGB);
     QImage image(tmp.data, tmp.cols, tmp.rows,  tmp.step1(),QImage::Format_RGB888);
@@ -345,14 +358,23 @@ void Work::run()
             qDebug() << "line:" << __LINE__
                      << "fun:"  << __FUNCTION__
                      <<"file:"  << __FILE__
-                     << "work_frame empty";
+                    << "work_frame empty";
         }
+
         cv::cvtColor(work_frame, gray, cv::COLOR_BGR2GRAY);
 
         // --- 2) Haar 人脸检测 ---
         std::vector<cv::Rect> faces;
 
-        this->cascade->detectMultiScale(gray, faces);
+        this->cascade->detectMultiScale(gray,
+                                        faces,
+                                        1.2,        // scaleFactor
+                                        5,          // minNeighbors
+                                        0,
+                                        cv::Size(60, 60),   // minSize
+                                        cv::Size()          // maxSize
+                                        );
+
         Rect rect;
         if (faces.empty() ) {
 
@@ -360,6 +382,8 @@ void Work::run()
             usleep(100000);
             continue;
         }
+
+        qDebug("检测到人脸");
 
         rect = faces[0];
 
@@ -370,7 +394,7 @@ void Work::run()
         }
 
 
-        qDebug() << "检测到人脸" << endl;
+
 
         //cv::rectangle(*this->frame, face, cv::Scalar(0, 255, 0), 2);
         emit sigFaceTrace(rect.x, rect.y, true);
@@ -394,7 +418,7 @@ void Work::run()
 
         static qint64 last = 0;
         qint64 now = QDateTime::currentMSecsSinceEpoch();
-        if (now - last < 2000) {  // 2000 ms = 2秒
+        if (now - last < 4000) {  // 2000 ms = 2秒
             continue;
         }
         last = now;
