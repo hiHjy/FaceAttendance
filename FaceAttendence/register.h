@@ -18,7 +18,7 @@ public:
 
     explicit Register(QWidget *parent = nullptr);
     ~Register();
-   static Register* getInstance();
+//   static Register* getInstance();
 
 
 public slots:
