@@ -15,6 +15,11 @@ public:
     explicit Widget_System(QWidget *parent = nullptr);
     ~Widget_System();
 
+private slots:
+    void on_btn_poweroff_clicked();
+
+    void on_btn_restart_clicked();
+
 private:
     Ui::Widget_System *ui;
 };

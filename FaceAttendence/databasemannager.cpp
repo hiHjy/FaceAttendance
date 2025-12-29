@@ -1,5 +1,7 @@
 #include "databasemannager.h"
 #include <QDebug>
+#include <QTime>
+
 DatabaseManager* DatabaseManager::self = nullptr;
 DatabaseManager::DatabaseManager(QObject *parent)
     : QObject(parent)
@@ -136,3 +138,5 @@ bool DatabaseManager::insertVisitRecord(QString user_id)
 
     return query.exec();
 }
+
+

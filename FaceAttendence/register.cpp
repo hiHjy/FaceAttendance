@@ -31,8 +31,7 @@ Register::~Register()
 
 Register* Register::getInstance()
 {
-    if (!self)
-        self = new Register();
+
     return self;
 }
 

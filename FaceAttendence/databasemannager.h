@@ -4,7 +4,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
-
+class QSqlQueryModel;
 struct UserInfo {
     QString name;
     QString workId;
@@ -30,7 +30,7 @@ public:
 
 
     UserInfo getInfoByUID(const QString& faceToken);
-
+    QSqlQueryModel *model;
 
 private:
     static DatabaseManager *self;

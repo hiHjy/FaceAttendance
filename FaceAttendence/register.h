@@ -27,7 +27,7 @@ public slots:
     void on_Btn_AddImg_clicked();
 
     void on_Btn_Register_clicked();
-
+    static Register* getInstance();
     void on_Btn_Cap_clicked();
     void timerEvent(QTimerEvent *e) override;
 private slots:
