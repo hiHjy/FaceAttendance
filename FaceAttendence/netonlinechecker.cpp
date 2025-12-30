@@ -4,6 +4,24 @@
 #define TIMER_INTERVAL 5000
 #define TIMEOUT 3000
 
+
+/*
+
+    总结：
+    流程：就是用定时器去周期性的去访问指定的URL，根据返回的状态码去判断网络是否真的可以上网。
+
+    1，此模块代码的编写，对qt的信号和槽机制有了更深刻的理解，而且对定时器的使用又更加熟悉了。
+    信号和槽的第三个参数表示该链接绑定的上下文，这个上下文可以控制这个连接的生命周期，
+    另外学习了为避免在网络不好的情况下，在发送请求后避免重复发送请求的方法。
+
+    2，再次接触网络访问管理器的使用，对网络访问管理器有了进一步的理解。
+
+
+
+
+*/
+
+
 #define URL "https://www.apple.com/library/test/success.html"
 NetOnlineChecker::NetOnlineChecker(QObject *parent) : QObject(parent)
 {
@@ -15,6 +33,9 @@ NetOnlineChecker::NetOnlineChecker(QObject *parent) : QObject(parent)
     timer->start();
     connect(timer, &QTimer::timeout, this, &NetOnlineChecker::checkOnce); //5s检查一次
 }
+
+
+/* 用于立刻检测网络的状态 */
 
 void NetOnlineChecker::checkOnce()
 {
@@ -36,7 +57,7 @@ void NetOnlineChecker::checkOnce()
     request.setSslConfiguration(config);
     request.setHeader(QNetworkRequest::UserAgentHeader, "QtNetProbe/1.0");
 
-    if (reply) return; //如果reply还没有被释放那么说明已经发送请求了，不过正在等待，此时不要发送新的请求了
+    if (reply) return; //如果reply还没有被释放那么说明已经发送请求了，不过正在等待，此时不要发送新的请求了，防止重复发送请求
     reply = manager->head(request); //立即发送了 HTTP HEAD 请求
 
     QTimer *timeoutTimer = new QTimer(reply);//让这个定时器作为reply的子对象，当reply被析构时，定时器被自动删除，安全！
