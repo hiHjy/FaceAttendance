@@ -61,6 +61,7 @@ SOURCES       = databasemannager.cpp \
 		netonlinechecker.cpp \
 		record.cpp \
 		register.cpp \
+		systemmonitor.cpp \
 		widget_login_page.cpp \
 		widget_system.cpp qrc_img.cpp \
 		moc_databasemannager.cpp \
@@ -70,6 +71,7 @@ SOURCES       = databasemannager.cpp \
 		moc_netonlinechecker.cpp \
 		moc_record.cpp \
 		moc_register.cpp \
+		moc_systemmonitor.cpp \
 		moc_widget_login_page.cpp \
 		moc_widget_system.cpp
 OBJECTS       = databasemannager.o \
@@ -81,6 +83,7 @@ OBJECTS       = databasemannager.o \
 		netonlinechecker.o \
 		record.o \
 		register.o \
+		systemmonitor.o \
 		widget_login_page.o \
 		widget_system.o \
 		qrc_img.o \
@@ -91,6 +94,7 @@ OBJECTS       = databasemannager.o \
 		moc_netonlinechecker.o \
 		moc_record.o \
 		moc_register.o \
+		moc_systemmonitor.o \
 		moc_widget_login_page.o \
 		moc_widget_system.o
 DIST          = ../../../arm-qt/mkspecs/features/spec_pre.prf \
@@ -197,6 +201,7 @@ DIST          = ../../../arm-qt/mkspecs/features/spec_pre.prf \
 		netonlinechecker.h \
 		record.h \
 		register.h \
+		systemmonitor.h \
 		widget_login_page.h \
 		widget_system.h databasemannager.cpp \
 		dialog_admin.cpp \
@@ -207,6 +212,7 @@ DIST          = ../../../arm-qt/mkspecs/features/spec_pre.prf \
 		netonlinechecker.cpp \
 		record.cpp \
 		register.cpp \
+		systemmonitor.cpp \
 		widget_login_page.cpp \
 		widget_system.cpp
 QMAKE_TARGET  = FaceAttendence
@@ -433,8 +439,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents img.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../arm-qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents databasemannager.h dialog_admin.h face_api.h faceattendence.h form.h netonlinechecker.h record.h register.h widget_login_page.h widget_system.h $(DISTDIR)/
-	$(COPY_FILE) --parents databasemannager.cpp dialog_admin.cpp face_api.cpp form.cpp main.cpp faceattendence.cpp netonlinechecker.cpp record.cpp register.cpp widget_login_page.cpp widget_system.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents databasemannager.h dialog_admin.h face_api.h faceattendence.h form.h netonlinechecker.h record.h register.h systemmonitor.h widget_login_page.h widget_system.h $(DISTDIR)/
+	$(COPY_FILE) --parents databasemannager.cpp dialog_admin.cpp face_api.cpp form.cpp main.cpp faceattendence.cpp netonlinechecker.cpp record.cpp register.cpp systemmonitor.cpp widget_login_page.cpp widget_system.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents dialog_admin.ui faceattendence.ui form.ui record.ui register.ui widget_login_page.ui widget_system.ui $(DISTDIR)/
 
 
@@ -478,9 +484,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../arm-qt/mkspecs/features/data/dummy.cpp
 	arm-linux-gnueabihf-g++ -pipe -O2 -march=armv7-a -mtune=cortex-a7 -mfpu=neon -mfloat-abi=hard -O2 -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h ../../../arm-qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_databasemannager.cpp moc_dialog_admin.cpp moc_faceattendence.cpp moc_form.cpp moc_netonlinechecker.cpp moc_record.cpp moc_register.cpp moc_widget_login_page.cpp moc_widget_system.cpp
+compiler_moc_header_make_all: moc_databasemannager.cpp moc_dialog_admin.cpp moc_faceattendence.cpp moc_form.cpp moc_netonlinechecker.cpp moc_record.cpp moc_register.cpp moc_systemmonitor.cpp moc_widget_login_page.cpp moc_widget_system.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_databasemannager.cpp moc_dialog_admin.cpp moc_faceattendence.cpp moc_form.cpp moc_netonlinechecker.cpp moc_record.cpp moc_register.cpp moc_widget_login_page.cpp moc_widget_system.cpp
+	-$(DEL_FILE) moc_databasemannager.cpp moc_dialog_admin.cpp moc_faceattendence.cpp moc_form.cpp moc_netonlinechecker.cpp moc_record.cpp moc_register.cpp moc_systemmonitor.cpp moc_widget_login_page.cpp moc_widget_system.cpp
 moc_databasemannager.cpp: databasemannager.h \
 		../../../arm-qt/include/QtCore/QObject \
 		../../../arm-qt/include/QtCore/qobject.h \
@@ -1226,6 +1232,49 @@ moc_netonlinechecker.cpp: netonlinechecker.h \
 		../../../arm-qt/include/QtCore/qvarlengtharray.h \
 		../../../arm-qt/include/QtCore/qcontainerfwd.h \
 		../../../arm-qt/include/QtCore/qobject_impl.h \
+		../../../arm-qt/include/QtNetwork/QNetworkAccessManager \
+		../../../arm-qt/include/QtNetwork/qnetworkaccessmanager.h \
+		../../../arm-qt/include/QtNetwork/qtnetworkglobal.h \
+		../../../arm-qt/include/QtNetwork/qtnetwork-config.h \
+		../../../arm-qt/include/QtNetwork/qnetworkrequest.h \
+		../../../arm-qt/include/QtCore/QSharedDataPointer \
+		../../../arm-qt/include/QtCore/qshareddata.h \
+		../../../arm-qt/include/QtCore/qhash.h \
+		../../../arm-qt/include/QtCore/QString \
+		../../../arm-qt/include/QtCore/QUrl \
+		../../../arm-qt/include/QtCore/qurl.h \
+		../../../arm-qt/include/QtCore/qurlquery.h \
+		../../../arm-qt/include/QtCore/QVariant \
+		../../../arm-qt/include/QtCore/qvariant.h \
+		../../../arm-qt/include/QtCore/qmap.h \
+		../../../arm-qt/include/QtCore/qdebug.h \
+		../../../arm-qt/include/QtCore/qtextstream.h \
+		../../../arm-qt/include/QtCore/qiodevice.h \
+		../../../arm-qt/include/QtCore/qlocale.h \
+		../../../arm-qt/include/QtCore/qvector.h \
+		../../../arm-qt/include/QtCore/qpoint.h \
+		../../../arm-qt/include/QtCore/qset.h \
+		../../../arm-qt/include/QtCore/qcontiguouscache.h \
+		../../../arm-qt/include/QtCore/qsharedpointer.h \
+		../../../arm-qt/include/QtCore/qsharedpointer_impl.h \
+		../../../arm-qt/include/QtCore/QVector \
+		../../../arm-qt/include/QtNetwork/QSslConfiguration \
+		../../../arm-qt/include/QtNetwork/qsslconfiguration.h \
+		../../../arm-qt/include/QtNetwork/qsslsocket.h \
+		../../../arm-qt/include/QtNetwork/qtcpsocket.h \
+		../../../arm-qt/include/QtNetwork/qabstractsocket.h \
+		../../../arm-qt/include/QtNetwork/qsslerror.h \
+		../../../arm-qt/include/QtNetwork/qsslcertificate.h \
+		../../../arm-qt/include/QtCore/qcryptographichash.h \
+		../../../arm-qt/include/QtCore/qdatetime.h \
+		../../../arm-qt/include/QtNetwork/qssl.h \
+		../../../arm-qt/include/QtCore/QFlags \
+		../../../arm-qt/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		../../../arm-qt/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		../../../arm-qt/include/QtCore/QMetaType \
+		../../../arm-qt/include/QtCore/QTimer \
+		../../../arm-qt/include/QtCore/qtimer.h \
+		../../../arm-qt/include/QtCore/qbasictimer.h \
 		moc_predefs.h \
 		../../../arm-qt/bin/moc
 	/home/hjy/arm-qt/bin/moc $(DEFINES) --include /home/hjy/Documents/office_meta/FaceAttendence_copy/moc_predefs.h -I/home/hjy/arm-qt/mkspecs/linux-arm-gnueabi-g++ -I/home/hjy/Documents/office_meta/FaceAttendence_copy -I/opt/opencv4.5.2-arm/include -I/opt/opencv4.5.2-arm/include/opencv4/opencv2 -I/opt/opencv4.5.2-arm/include/opencv4 -I/home/hjy/arm-qt/include -I/home/hjy/arm-qt/include/QtMultimediaWidgets -I/home/hjy/arm-qt/include/QtMultimedia -I/home/hjy/arm-qt/include/QtQuickWidgets -I/home/hjy/arm-qt/include/QtWidgets -I/home/hjy/arm-qt/include/QtQuick -I/home/hjy/arm-qt/include/QtGui -I/home/hjy/arm-qt/include/QtQml -I/home/hjy/arm-qt/include/QtNetwork -I/home/hjy/arm-qt/include/QtSql -I/home/hjy/arm-qt/include/QtCore -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4 -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/arm-linux-gnueabihf -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/backward -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include-fixed -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include netonlinechecker.h -o moc_netonlinechecker.cpp
@@ -2032,6 +2081,68 @@ moc_register.cpp: register.h \
 		moc_predefs.h \
 		../../../arm-qt/bin/moc
 	/home/hjy/arm-qt/bin/moc $(DEFINES) --include /home/hjy/Documents/office_meta/FaceAttendence_copy/moc_predefs.h -I/home/hjy/arm-qt/mkspecs/linux-arm-gnueabi-g++ -I/home/hjy/Documents/office_meta/FaceAttendence_copy -I/opt/opencv4.5.2-arm/include -I/opt/opencv4.5.2-arm/include/opencv4/opencv2 -I/opt/opencv4.5.2-arm/include/opencv4 -I/home/hjy/arm-qt/include -I/home/hjy/arm-qt/include/QtMultimediaWidgets -I/home/hjy/arm-qt/include/QtMultimedia -I/home/hjy/arm-qt/include/QtQuickWidgets -I/home/hjy/arm-qt/include/QtWidgets -I/home/hjy/arm-qt/include/QtQuick -I/home/hjy/arm-qt/include/QtGui -I/home/hjy/arm-qt/include/QtQml -I/home/hjy/arm-qt/include/QtNetwork -I/home/hjy/arm-qt/include/QtSql -I/home/hjy/arm-qt/include/QtCore -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4 -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/arm-linux-gnueabihf -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/backward -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include-fixed -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include register.h -o moc_register.cpp
+
+moc_systemmonitor.cpp: systemmonitor.h \
+		../../../arm-qt/include/QtCore/QObject \
+		../../../arm-qt/include/QtCore/qobject.h \
+		../../../arm-qt/include/QtCore/qobjectdefs.h \
+		../../../arm-qt/include/QtCore/qnamespace.h \
+		../../../arm-qt/include/QtCore/qglobal.h \
+		../../../arm-qt/include/QtCore/qconfig-bootstrapped.h \
+		../../../arm-qt/include/QtCore/qconfig.h \
+		../../../arm-qt/include/QtCore/qtcore-config.h \
+		../../../arm-qt/include/QtCore/qsystemdetection.h \
+		../../../arm-qt/include/QtCore/qprocessordetection.h \
+		../../../arm-qt/include/QtCore/qcompilerdetection.h \
+		../../../arm-qt/include/QtCore/qtypeinfo.h \
+		../../../arm-qt/include/QtCore/qsysinfo.h \
+		../../../arm-qt/include/QtCore/qlogging.h \
+		../../../arm-qt/include/QtCore/qflags.h \
+		../../../arm-qt/include/QtCore/qatomic.h \
+		../../../arm-qt/include/QtCore/qbasicatomic.h \
+		../../../arm-qt/include/QtCore/qatomic_bootstrap.h \
+		../../../arm-qt/include/QtCore/qgenericatomic.h \
+		../../../arm-qt/include/QtCore/qatomic_cxx11.h \
+		../../../arm-qt/include/QtCore/qatomic_msvc.h \
+		../../../arm-qt/include/QtCore/qglobalstatic.h \
+		../../../arm-qt/include/QtCore/qmutex.h \
+		../../../arm-qt/include/QtCore/qnumeric.h \
+		../../../arm-qt/include/QtCore/qversiontagging.h \
+		../../../arm-qt/include/QtCore/qobjectdefs_impl.h \
+		../../../arm-qt/include/QtCore/qstring.h \
+		../../../arm-qt/include/QtCore/qchar.h \
+		../../../arm-qt/include/QtCore/qbytearray.h \
+		../../../arm-qt/include/QtCore/qrefcount.h \
+		../../../arm-qt/include/QtCore/qarraydata.h \
+		../../../arm-qt/include/QtCore/qstringliteral.h \
+		../../../arm-qt/include/QtCore/qstringalgorithms.h \
+		../../../arm-qt/include/QtCore/qstringview.h \
+		../../../arm-qt/include/QtCore/qstringbuilder.h \
+		../../../arm-qt/include/QtCore/qlist.h \
+		../../../arm-qt/include/QtCore/qalgorithms.h \
+		../../../arm-qt/include/QtCore/qiterator.h \
+		../../../arm-qt/include/QtCore/qhashfunctions.h \
+		../../../arm-qt/include/QtCore/qpair.h \
+		../../../arm-qt/include/QtCore/qbytearraylist.h \
+		../../../arm-qt/include/QtCore/qstringlist.h \
+		../../../arm-qt/include/QtCore/qregexp.h \
+		../../../arm-qt/include/QtCore/qstringmatcher.h \
+		../../../arm-qt/include/QtCore/qcoreevent.h \
+		../../../arm-qt/include/QtCore/qscopedpointer.h \
+		../../../arm-qt/include/QtCore/qmetatype.h \
+		../../../arm-qt/include/QtCore/qvarlengtharray.h \
+		../../../arm-qt/include/QtCore/qcontainerfwd.h \
+		../../../arm-qt/include/QtCore/qobject_impl.h \
+		../../../arm-qt/include/QtCore/QTimer \
+		../../../arm-qt/include/QtCore/qtimer.h \
+		../../../arm-qt/include/QtCore/qbasictimer.h \
+		../../../arm-qt/include/QtCore/QDateTime \
+		../../../arm-qt/include/QtCore/qdatetime.h \
+		../../../arm-qt/include/QtCore/qshareddata.h \
+		../../../arm-qt/include/QtCore/qhash.h \
+		moc_predefs.h \
+		../../../arm-qt/bin/moc
+	/home/hjy/arm-qt/bin/moc $(DEFINES) --include /home/hjy/Documents/office_meta/FaceAttendence_copy/moc_predefs.h -I/home/hjy/arm-qt/mkspecs/linux-arm-gnueabi-g++ -I/home/hjy/Documents/office_meta/FaceAttendence_copy -I/opt/opencv4.5.2-arm/include -I/opt/opencv4.5.2-arm/include/opencv4/opencv2 -I/opt/opencv4.5.2-arm/include/opencv4 -I/home/hjy/arm-qt/include -I/home/hjy/arm-qt/include/QtMultimediaWidgets -I/home/hjy/arm-qt/include/QtMultimedia -I/home/hjy/arm-qt/include/QtQuickWidgets -I/home/hjy/arm-qt/include/QtWidgets -I/home/hjy/arm-qt/include/QtQuick -I/home/hjy/arm-qt/include/QtGui -I/home/hjy/arm-qt/include/QtQml -I/home/hjy/arm-qt/include/QtNetwork -I/home/hjy/arm-qt/include/QtSql -I/home/hjy/arm-qt/include/QtCore -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4 -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/arm-linux-gnueabihf -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include/c++/4.9.4/backward -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/include-fixed -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/include -I/usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include systemmonitor.h -o moc_systemmonitor.cpp
 
 moc_widget_login_page.cpp: widget_login_page.h \
 		../../../arm-qt/include/QtWidgets/QWidget \
@@ -6394,7 +6505,55 @@ netonlinechecker.o: netonlinechecker.cpp netonlinechecker.h \
 		../../../arm-qt/include/QtCore/qmetatype.h \
 		../../../arm-qt/include/QtCore/qvarlengtharray.h \
 		../../../arm-qt/include/QtCore/qcontainerfwd.h \
-		../../../arm-qt/include/QtCore/qobject_impl.h
+		../../../arm-qt/include/QtCore/qobject_impl.h \
+		../../../arm-qt/include/QtNetwork/QNetworkAccessManager \
+		../../../arm-qt/include/QtNetwork/qnetworkaccessmanager.h \
+		../../../arm-qt/include/QtNetwork/qtnetworkglobal.h \
+		../../../arm-qt/include/QtNetwork/qtnetwork-config.h \
+		../../../arm-qt/include/QtNetwork/qnetworkrequest.h \
+		../../../arm-qt/include/QtCore/QSharedDataPointer \
+		../../../arm-qt/include/QtCore/qshareddata.h \
+		../../../arm-qt/include/QtCore/qhash.h \
+		../../../arm-qt/include/QtCore/QString \
+		../../../arm-qt/include/QtCore/QUrl \
+		../../../arm-qt/include/QtCore/qurl.h \
+		../../../arm-qt/include/QtCore/qurlquery.h \
+		../../../arm-qt/include/QtCore/QVariant \
+		../../../arm-qt/include/QtCore/qvariant.h \
+		../../../arm-qt/include/QtCore/qmap.h \
+		../../../arm-qt/include/QtCore/qdebug.h \
+		../../../arm-qt/include/QtCore/qtextstream.h \
+		../../../arm-qt/include/QtCore/qiodevice.h \
+		../../../arm-qt/include/QtCore/qlocale.h \
+		../../../arm-qt/include/QtCore/qvector.h \
+		../../../arm-qt/include/QtCore/qpoint.h \
+		../../../arm-qt/include/QtCore/qset.h \
+		../../../arm-qt/include/QtCore/qcontiguouscache.h \
+		../../../arm-qt/include/QtCore/qsharedpointer.h \
+		../../../arm-qt/include/QtCore/qsharedpointer_impl.h \
+		../../../arm-qt/include/QtCore/QVector \
+		../../../arm-qt/include/QtNetwork/QSslConfiguration \
+		../../../arm-qt/include/QtNetwork/qsslconfiguration.h \
+		../../../arm-qt/include/QtNetwork/qsslsocket.h \
+		../../../arm-qt/include/QtNetwork/qtcpsocket.h \
+		../../../arm-qt/include/QtNetwork/qabstractsocket.h \
+		../../../arm-qt/include/QtNetwork/qsslerror.h \
+		../../../arm-qt/include/QtNetwork/qsslcertificate.h \
+		../../../arm-qt/include/QtCore/qcryptographichash.h \
+		../../../arm-qt/include/QtCore/qdatetime.h \
+		../../../arm-qt/include/QtNetwork/qssl.h \
+		../../../arm-qt/include/QtCore/QFlags \
+		../../../arm-qt/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		../../../arm-qt/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		../../../arm-qt/include/QtCore/QMetaType \
+		../../../arm-qt/include/QtCore/QTimer \
+		../../../arm-qt/include/QtCore/qtimer.h \
+		../../../arm-qt/include/QtCore/qbasictimer.h \
+		../../../arm-qt/include/QtNetwork/QSsl \
+		../../../arm-qt/include/QtNetwork/QNetworkReply \
+		../../../arm-qt/include/QtNetwork/qnetworkreply.h \
+		../../../arm-qt/include/QtCore/QIODevice \
+		../../../arm-qt/include/QtNetwork/QNetworkRequest
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o netonlinechecker.o netonlinechecker.cpp
 
 record.o: record.cpp record.h \
@@ -7282,6 +7441,82 @@ register.o: register.cpp register.h \
 		databasemanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o register.o register.cpp
 
+systemmonitor.o: systemmonitor.cpp systemmonitor.h \
+		../../../arm-qt/include/QtCore/QObject \
+		../../../arm-qt/include/QtCore/qobject.h \
+		../../../arm-qt/include/QtCore/qobjectdefs.h \
+		../../../arm-qt/include/QtCore/qnamespace.h \
+		../../../arm-qt/include/QtCore/qglobal.h \
+		../../../arm-qt/include/QtCore/qconfig-bootstrapped.h \
+		../../../arm-qt/include/QtCore/qconfig.h \
+		../../../arm-qt/include/QtCore/qtcore-config.h \
+		../../../arm-qt/include/QtCore/qsystemdetection.h \
+		../../../arm-qt/include/QtCore/qprocessordetection.h \
+		../../../arm-qt/include/QtCore/qcompilerdetection.h \
+		../../../arm-qt/include/QtCore/qtypeinfo.h \
+		../../../arm-qt/include/QtCore/qsysinfo.h \
+		../../../arm-qt/include/QtCore/qlogging.h \
+		../../../arm-qt/include/QtCore/qflags.h \
+		../../../arm-qt/include/QtCore/qatomic.h \
+		../../../arm-qt/include/QtCore/qbasicatomic.h \
+		../../../arm-qt/include/QtCore/qatomic_bootstrap.h \
+		../../../arm-qt/include/QtCore/qgenericatomic.h \
+		../../../arm-qt/include/QtCore/qatomic_cxx11.h \
+		../../../arm-qt/include/QtCore/qatomic_msvc.h \
+		../../../arm-qt/include/QtCore/qglobalstatic.h \
+		../../../arm-qt/include/QtCore/qmutex.h \
+		../../../arm-qt/include/QtCore/qnumeric.h \
+		../../../arm-qt/include/QtCore/qversiontagging.h \
+		../../../arm-qt/include/QtCore/qobjectdefs_impl.h \
+		../../../arm-qt/include/QtCore/qstring.h \
+		../../../arm-qt/include/QtCore/qchar.h \
+		../../../arm-qt/include/QtCore/qbytearray.h \
+		../../../arm-qt/include/QtCore/qrefcount.h \
+		../../../arm-qt/include/QtCore/qarraydata.h \
+		../../../arm-qt/include/QtCore/qstringliteral.h \
+		../../../arm-qt/include/QtCore/qstringalgorithms.h \
+		../../../arm-qt/include/QtCore/qstringview.h \
+		../../../arm-qt/include/QtCore/qstringbuilder.h \
+		../../../arm-qt/include/QtCore/qlist.h \
+		../../../arm-qt/include/QtCore/qalgorithms.h \
+		../../../arm-qt/include/QtCore/qiterator.h \
+		../../../arm-qt/include/QtCore/qhashfunctions.h \
+		../../../arm-qt/include/QtCore/qpair.h \
+		../../../arm-qt/include/QtCore/qbytearraylist.h \
+		../../../arm-qt/include/QtCore/qstringlist.h \
+		../../../arm-qt/include/QtCore/qregexp.h \
+		../../../arm-qt/include/QtCore/qstringmatcher.h \
+		../../../arm-qt/include/QtCore/qcoreevent.h \
+		../../../arm-qt/include/QtCore/qscopedpointer.h \
+		../../../arm-qt/include/QtCore/qmetatype.h \
+		../../../arm-qt/include/QtCore/qvarlengtharray.h \
+		../../../arm-qt/include/QtCore/qcontainerfwd.h \
+		../../../arm-qt/include/QtCore/qobject_impl.h \
+		../../../arm-qt/include/QtCore/QTimer \
+		../../../arm-qt/include/QtCore/qtimer.h \
+		../../../arm-qt/include/QtCore/qbasictimer.h \
+		../../../arm-qt/include/QtCore/QDateTime \
+		../../../arm-qt/include/QtCore/qdatetime.h \
+		../../../arm-qt/include/QtCore/qshareddata.h \
+		../../../arm-qt/include/QtCore/qhash.h \
+		../../../arm-qt/include/QtCore/QFile \
+		../../../arm-qt/include/QtCore/qfile.h \
+		../../../arm-qt/include/QtCore/qfiledevice.h \
+		../../../arm-qt/include/QtCore/qiodevice.h \
+		../../../arm-qt/include/QtCore/QDebug \
+		../../../arm-qt/include/QtCore/qdebug.h \
+		../../../arm-qt/include/QtCore/qmap.h \
+		../../../arm-qt/include/QtCore/qtextstream.h \
+		../../../arm-qt/include/QtCore/qlocale.h \
+		../../../arm-qt/include/QtCore/qvariant.h \
+		../../../arm-qt/include/QtCore/qvector.h \
+		../../../arm-qt/include/QtCore/qpoint.h \
+		../../../arm-qt/include/QtCore/qset.h \
+		../../../arm-qt/include/QtCore/qcontiguouscache.h \
+		../../../arm-qt/include/QtCore/qsharedpointer.h \
+		../../../arm-qt/include/QtCore/qsharedpointer_impl.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o systemmonitor.o systemmonitor.cpp
+
 widget_login_page.o: widget_login_page.cpp widget_login_page.h \
 		../../../arm-qt/include/QtWidgets/QWidget \
 		../../../arm-qt/include/QtWidgets/qwidget.h \
@@ -7553,7 +7788,38 @@ widget_system.o: widget_system.cpp widget_system.h \
 		../../../arm-qt/include/QtGui/qicon.h \
 		../../../arm-qt/include/QtWidgets/QVBoxLayout \
 		../../../arm-qt/include/QtCore/QProcess \
-		../../../arm-qt/include/QtCore/qprocess.h
+		../../../arm-qt/include/QtCore/qprocess.h \
+		netonlinechecker.h \
+		../../../arm-qt/include/QtCore/QObject \
+		../../../arm-qt/include/QtNetwork/QNetworkAccessManager \
+		../../../arm-qt/include/QtNetwork/qnetworkaccessmanager.h \
+		../../../arm-qt/include/QtNetwork/qtnetworkglobal.h \
+		../../../arm-qt/include/QtNetwork/qtnetwork-config.h \
+		../../../arm-qt/include/QtNetwork/qnetworkrequest.h \
+		../../../arm-qt/include/QtCore/QSharedDataPointer \
+		../../../arm-qt/include/QtCore/QString \
+		../../../arm-qt/include/QtCore/QUrl \
+		../../../arm-qt/include/QtCore/QVector \
+		../../../arm-qt/include/QtNetwork/QSslConfiguration \
+		../../../arm-qt/include/QtNetwork/qsslconfiguration.h \
+		../../../arm-qt/include/QtNetwork/qsslsocket.h \
+		../../../arm-qt/include/QtNetwork/qtcpsocket.h \
+		../../../arm-qt/include/QtNetwork/qabstractsocket.h \
+		../../../arm-qt/include/QtNetwork/qsslerror.h \
+		../../../arm-qt/include/QtNetwork/qsslcertificate.h \
+		../../../arm-qt/include/QtCore/qcryptographichash.h \
+		../../../arm-qt/include/QtCore/qdatetime.h \
+		../../../arm-qt/include/QtNetwork/qssl.h \
+		../../../arm-qt/include/QtCore/QFlags \
+		../../../arm-qt/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		../../../arm-qt/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		../../../arm-qt/include/QtCore/QMetaType \
+		../../../arm-qt/include/QtCore/QTimer \
+		../../../arm-qt/include/QtCore/qtimer.h \
+		../../../arm-qt/include/QtCore/qbasictimer.h \
+		../../../arm-qt/include/QtCore/QDebug \
+		systemmonitor.h \
+		../../../arm-qt/include/QtCore/QDateTime
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o widget_system.o widget_system.cpp
 
 qrc_img.o: qrc_img.cpp 
@@ -7579,6 +7845,9 @@ moc_record.o: moc_record.cpp
 
 moc_register.o: moc_register.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_register.o moc_register.cpp
+
+moc_systemmonitor.o: moc_systemmonitor.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_systemmonitor.o moc_systemmonitor.cpp
 
 moc_widget_login_page.o: moc_widget_login_page.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_widget_login_page.o moc_widget_login_page.cpp

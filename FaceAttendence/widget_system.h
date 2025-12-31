@@ -3,6 +3,7 @@
 
 #include <QWidget>
 class NetOnlineChecker;
+class SystemMonitor;
 namespace Ui {
 class Widget_System;
 }
@@ -17,7 +18,7 @@ public:
     ~Widget_System();
 
 private slots:
-
+    void updateStatus(QString Date, QString temp);
     void on_btn_poweroff_clicked();
 
     void on_btn_restart_clicked();
@@ -26,6 +27,7 @@ private slots:
 private:
     Ui::Widget_System *ui;
     NetOnlineChecker *netChecker;
+    SystemMonitor *monitor;
 };
 
 #endif // WIDGET_SYSTEM_H

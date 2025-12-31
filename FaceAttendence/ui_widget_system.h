@@ -23,7 +23,7 @@ class Ui_Widget_System
 {
 public:
     QWidget *widget;
-    QWidget *widget1;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *label_7;
@@ -34,23 +34,29 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_5;
     QPushButton *btn_restart;
-    QWidget *layoutWidget;
+    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_8;
     QLabel *label_2;
     QWidget *widget_status;
-    QWidget *widget2;
+    QWidget *widget1;
     QHBoxLayout *horizontalLayout_5;
     QLabel *label;
     QLabel *lb_net_status;
+    QWidget *widget2;
+    QHBoxLayout *horizontalLayout_6;
     QLabel *label_4;
     QLabel *lb_cpu_tem;
-    QLabel *label_10;
-    QLabel *lb_cpu_use;
+    QWidget *widget3;
+    QHBoxLayout *horizontalLayout_7;
     QLabel *label_12;
     QLabel *lb_sensor_tem;
+    QWidget *widget4;
+    QHBoxLayout *horizontalLayout_8;
     QLabel *label_14;
     QLabel *lb_sensor_hum;
+    QWidget *widget5;
+    QHBoxLayout *horizontalLayout_9;
     QLabel *label_16;
     QLabel *lb_sys_date;
 
@@ -89,16 +95,16 @@ public:
 "    background-color: rgb(46, 52, 54);  /* \346\267\273\345\212\240\350\203\214\346\231\257\350\211\262 */\n"
 "    color: white;              /* \346\226\207\345\255\227\351\242\234\350\211\262 */\n"
 "}"));
-        widget1 = new QWidget(widget);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        widget1->setGeometry(QRect(9, 9, 281, 261));
-        verticalLayout = new QVBoxLayout(widget1);
+        layoutWidget = new QWidget(widget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(9, 9, 281, 261));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 30, 0);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(-1, -1, 0, -1);
-        label_7 = new QLabel(widget1);
+        label_7 = new QLabel(layoutWidget);
         label_7->setObjectName(QString::fromUtf8("label_7"));
         label_7->setMaximumSize(QSize(50, 16777215));
         QFont font;
@@ -108,7 +114,7 @@ public:
 
         horizontalLayout->addWidget(label_7);
 
-        btn_net = new QPushButton(widget1);
+        btn_net = new QPushButton(layoutWidget);
         btn_net->setObjectName(QString::fromUtf8("btn_net"));
         btn_net->setMinimumSize(QSize(0, 50));
 
@@ -119,14 +125,14 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_6 = new QLabel(widget1);
+        label_6 = new QLabel(layoutWidget);
         label_6->setObjectName(QString::fromUtf8("label_6"));
         label_6->setMaximumSize(QSize(50, 16777215));
         label_6->setStyleSheet(QString::fromUtf8("image: url(:/power-on.png);"));
 
         horizontalLayout_2->addWidget(label_6);
 
-        btn_poweroff = new QPushButton(widget1);
+        btn_poweroff = new QPushButton(layoutWidget);
         btn_poweroff->setObjectName(QString::fromUtf8("btn_poweroff"));
         btn_poweroff->setMinimumSize(QSize(0, 50));
 
@@ -137,14 +143,14 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label_5 = new QLabel(widget1);
+        label_5 = new QLabel(layoutWidget);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setMaximumSize(QSize(50, 16777215));
         label_5->setStyleSheet(QString::fromUtf8("image: url(:/power.png);"));
 
         horizontalLayout_3->addWidget(label_5);
 
-        btn_restart = new QPushButton(widget1);
+        btn_restart = new QPushButton(layoutWidget);
         btn_restart->setObjectName(QString::fromUtf8("btn_restart"));
         btn_restart->setMinimumSize(QSize(0, 50));
 
@@ -153,20 +159,20 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_3);
 
-        layoutWidget = new QWidget(Widget_System);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(300, 20, 161, 51));
-        horizontalLayout_4 = new QHBoxLayout(layoutWidget);
+        layoutWidget1 = new QWidget(Widget_System);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(300, 20, 161, 51));
+        horizontalLayout_4 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-        label_8 = new QLabel(layoutWidget);
+        label_8 = new QLabel(layoutWidget1);
         label_8->setObjectName(QString::fromUtf8("label_8"));
         label_8->setMaximumSize(QSize(100, 100));
         label_8->setStyleSheet(QString::fromUtf8("image: url(:/configuration.png);"));
 
         horizontalLayout_4->addWidget(label_8);
 
-        label_2 = new QLabel(layoutWidget);
+        label_2 = new QLabel(layoutWidget1);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setMaximumSize(QSize(100, 100));
         QFont font1;
@@ -187,13 +193,13 @@ public:
 "font-size: 10pt;\n"
 "}\n"
 "background-color: rgb(85, 87, 83);"));
-        widget2 = new QWidget(widget_status);
-        widget2->setObjectName(QString::fromUtf8("widget2"));
-        widget2->setGeometry(QRect(9, 9, 801, 22));
-        horizontalLayout_5 = new QHBoxLayout(widget2);
+        widget1 = new QWidget(widget_status);
+        widget1->setObjectName(QString::fromUtf8("widget1"));
+        widget1->setGeometry(QRect(11, 11, 87, 22));
+        horizontalLayout_5 = new QHBoxLayout(widget1);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget2);
+        label = new QLabel(widget1);
         label->setObjectName(QString::fromUtf8("label"));
         label->setMinimumSize(QSize(40, 0));
         label->setMaximumSize(QSize(33, 16777215));
@@ -203,72 +209,84 @@ public:
 
         horizontalLayout_5->addWidget(label);
 
-        lb_net_status = new QLabel(widget2);
+        lb_net_status = new QLabel(widget1);
         lb_net_status->setObjectName(QString::fromUtf8("lb_net_status"));
         lb_net_status->setFont(font2);
 
         horizontalLayout_5->addWidget(lb_net_status);
 
+        widget2 = new QWidget(widget_status);
+        widget2->setObjectName(QString::fromUtf8("widget2"));
+        widget2->setGeometry(QRect(135, 11, 78, 22));
+        horizontalLayout_6 = new QHBoxLayout(widget2);
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
         label_4 = new QLabel(widget2);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setFont(font2);
 
-        horizontalLayout_5->addWidget(label_4);
+        horizontalLayout_6->addWidget(label_4);
 
         lb_cpu_tem = new QLabel(widget2);
         lb_cpu_tem->setObjectName(QString::fromUtf8("lb_cpu_tem"));
         lb_cpu_tem->setFont(font2);
 
-        horizontalLayout_5->addWidget(lb_cpu_tem);
+        horizontalLayout_6->addWidget(lb_cpu_tem);
 
-        label_10 = new QLabel(widget2);
-        label_10->setObjectName(QString::fromUtf8("label_10"));
-        label_10->setFont(font2);
-
-        horizontalLayout_5->addWidget(label_10);
-
-        lb_cpu_use = new QLabel(widget2);
-        lb_cpu_use->setObjectName(QString::fromUtf8("lb_cpu_use"));
-        lb_cpu_use->setFont(font2);
-
-        horizontalLayout_5->addWidget(lb_cpu_use);
-
-        label_12 = new QLabel(widget2);
+        widget3 = new QWidget(widget_status);
+        widget3->setObjectName(QString::fromUtf8("widget3"));
+        widget3->setGeometry(QRect(292, 11, 79, 22));
+        horizontalLayout_7 = new QHBoxLayout(widget3);
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
+        label_12 = new QLabel(widget3);
         label_12->setObjectName(QString::fromUtf8("label_12"));
         label_12->setFont(font2);
 
-        horizontalLayout_5->addWidget(label_12);
+        horizontalLayout_7->addWidget(label_12);
 
-        lb_sensor_tem = new QLabel(widget2);
+        lb_sensor_tem = new QLabel(widget3);
         lb_sensor_tem->setObjectName(QString::fromUtf8("lb_sensor_tem"));
         lb_sensor_tem->setFont(font2);
 
-        horizontalLayout_5->addWidget(lb_sensor_tem);
+        horizontalLayout_7->addWidget(lb_sensor_tem);
 
-        label_14 = new QLabel(widget2);
+        widget4 = new QWidget(widget_status);
+        widget4->setObjectName(QString::fromUtf8("widget4"));
+        widget4->setGeometry(QRect(448, 11, 79, 22));
+        horizontalLayout_8 = new QHBoxLayout(widget4);
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
+        label_14 = new QLabel(widget4);
         label_14->setObjectName(QString::fromUtf8("label_14"));
         label_14->setFont(font2);
 
-        horizontalLayout_5->addWidget(label_14);
+        horizontalLayout_8->addWidget(label_14);
 
-        lb_sensor_hum = new QLabel(widget2);
+        lb_sensor_hum = new QLabel(widget4);
         lb_sensor_hum->setObjectName(QString::fromUtf8("lb_sensor_hum"));
         lb_sensor_hum->setFont(font2);
 
-        horizontalLayout_5->addWidget(lb_sensor_hum);
+        horizontalLayout_8->addWidget(lb_sensor_hum);
 
-        label_16 = new QLabel(widget2);
+        widget5 = new QWidget(widget_status);
+        widget5->setObjectName(QString::fromUtf8("widget5"));
+        widget5->setGeometry(QRect(605, 11, 97, 22));
+        horizontalLayout_9 = new QHBoxLayout(widget5);
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
+        label_16 = new QLabel(widget5);
         label_16->setObjectName(QString::fromUtf8("label_16"));
         label_16->setFont(font2);
 
-        horizontalLayout_5->addWidget(label_16);
+        horizontalLayout_9->addWidget(label_16);
 
-        lb_sys_date = new QLabel(widget2);
+        lb_sys_date = new QLabel(widget5);
         lb_sys_date->setObjectName(QString::fromUtf8("lb_sys_date"));
         lb_sys_date->setFont(font2);
         lb_sys_date->setAutoFillBackground(false);
 
-        horizontalLayout_5->addWidget(lb_sys_date);
+        horizontalLayout_9->addWidget(lb_sys_date);
 
 
         retranslateUi(Widget_System);
@@ -291,8 +309,6 @@ public:
         lb_net_status->setText(QApplication::translate("Widget_System", "\345\267\262\350\277\236\346\216\245", nullptr));
         label_4->setText(QApplication::translate("Widget_System", "CPU\346\270\251\345\272\246:", nullptr));
         lb_cpu_tem->setText(QApplication::translate("Widget_System", "90", nullptr));
-        label_10->setText(QApplication::translate("Widget_System", "CPU\345\215\240\347\224\250:", nullptr));
-        lb_cpu_use->setText(QApplication::translate("Widget_System", "90", nullptr));
         label_12->setText(QApplication::translate("Widget_System", "\347\216\257\345\242\203\346\270\251\345\272\246:", nullptr));
         lb_sensor_tem->setText(QApplication::translate("Widget_System", "90", nullptr));
         label_14->setText(QApplication::translate("Widget_System", "\347\216\257\345\242\203\346\271\277\345\272\246:", nullptr));

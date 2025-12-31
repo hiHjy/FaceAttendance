@@ -53,7 +53,7 @@ QWidget #widget{
     color: white;              /* 文字颜色 */
 }</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -250,9 +250,9 @@ background-color: rgb(85, 87, 83);</string>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>801</width>
+      <x>11</x>
+      <y>11</y>
+      <width>87</width>
       <height>22</height>
      </rect>
     </property>
@@ -293,6 +293,18 @@ background-color: rgb(85, 87, 83);</string>
        </property>
       </widget>
      </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>135</x>
+      <y>11</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
       <widget class="QLabel" name="label_4">
        <property name="font">
@@ -313,34 +325,22 @@ background-color: rgb(85, 87, 83);</string>
         </font>
        </property>
        <property name="text">
-        <string>90</string>
+        <string>90℃</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="label_10">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>CPU占用:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="lb_cpu_use">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>90</string>
-       </property>
-      </widget>
-     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>292</x>
+      <y>11</y>
+      <width>79</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QLabel" name="label_12">
        <property name="font">
@@ -365,6 +365,18 @@ background-color: rgb(85, 87, 83);</string>
        </property>
       </widget>
      </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>448</x>
+      <y>11</y>
+      <width>79</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
       <widget class="QLabel" name="label_14">
        <property name="font">
@@ -389,6 +401,18 @@ background-color: rgb(85, 87, 83);</string>
        </property>
       </widget>
      </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>605</x>
+      <y>11</y>
+      <width>169</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
       <widget class="QLabel" name="label_16">
        <property name="font">
@@ -412,7 +436,7 @@ background-color: rgb(85, 87, 83);</string>
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>00:00</string>
+        <string>2025-12-31 00:00</string>
        </property>
       </widget>
      </item>

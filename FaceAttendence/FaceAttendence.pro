@@ -31,6 +31,7 @@ SOURCES += \
     netonlinechecker.cpp \
     record.cpp \
     register.cpp \
+    systemmonitor.cpp \
     widget_login_page.cpp \
     widget_system.cpp
 
@@ -43,6 +44,7 @@ HEADERS += \
     netonlinechecker.h \
     record.h \
     register.h \
+    systemmonitor.h \
     widget_login_page.h \
     widget_system.h
 
