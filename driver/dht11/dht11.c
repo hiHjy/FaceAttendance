@@ -72,6 +72,7 @@ static ssize_t dht11_read (struct file *filp, char __user *buf , size_t count , 
 
 	
 	int ret = 0;
+	int err = 0;
 	u64 cur_time_ns;
 	u64 high_start;
 	u64 high_time;
@@ -83,8 +84,7 @@ static ssize_t dht11_read (struct file *filp, char __user *buf , size_t count , 
 	mdelay(20);
 	gpio_set_value(dht11.gpio, 1);
 	udelay(20);
-	gpio_direction_input(dht11.gpio);       
-	udelay(30);
+	
 	
 	
 
@@ -92,17 +92,31 @@ static ssize_t dht11_read (struct file *filp, char __user *buf , size_t count , 
 	// 	printk("等待gpio被拉低中---");
 		
 	// }
+	preempt_disable();
+	gpio_direction_input(dht11.gpio);       
+	udelay(30);
+	if (wait_level_timeout(dht11.gpio, 0, TIMEOUT)){
+		err = -ETIMEDOUT;
+		goto out;
+				
+	}
 
-	if (wait_level_timeout(dht11.gpio, 0, TIMEOUT)) return -ETIMEDOUT; 
-	if (wait_level_timeout(dht11.gpio, 1, TIMEOUT)) return -ETIMEDOUT; 
-	if (wait_level_timeout(dht11.gpio, 0, TIMEOUT)) return -ETIMEDOUT; 
-	//while(!(gpio_get_value(dht11.gpio) == 1)); 
+	if (wait_level_timeout(dht11.gpio, 1, TIMEOUT)){
+		err = -ETIMEDOUT;
+		goto out;
+				
+	} 
+	if (wait_level_timeout(dht11.gpio, 0, TIMEOUT)){
+		err = -ETIMEDOUT;
+		goto out;
+				
+	}
 	
 	u8 data[5];
-	int err = 0;
+	
 	memset(data,0, sizeof(data));
 	int i, j;
-	preempt_disable();
+	
 	for (i = 0; i < 5; i++) {
 		
 		for ( j = 7; j >= 0; j--) {
