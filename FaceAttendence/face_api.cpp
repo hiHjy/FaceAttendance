@@ -4,18 +4,21 @@
 #include <QSsl>
 #include <register.h>
 QString global_token = "";
+
 // 百度AI开放平台的API认证信息
 // client_id: 客户端ID，用于标识应用
 QString client_id = "EuabRmosANnliPgnNxB32rDt";
 // client_secret: 客户端密钥，用于验证应用身份
 QString client_secret = "8GGFznpVx7azYYSCFampuULKW3UxgLvp";
+static QNetworkAccessManager* manager = nullptr;
 
 // 获取百度AI访问令牌的函数
 // 参数: callback - 回调函数，获取到token后会调用此函数
 void getAccessToken(std::function<void(QString)> callback)
 {
     // 创建网络访问管理器，用于发送HTTP请求
-    QNetworkAccessManager* manager = new QNetworkAccessManager;
+
+    manager = FaceAttendence::getInstance()->manager;
 
     // 设置请求的URL - 百度AI的令牌获取接口
 
@@ -37,10 +40,11 @@ void getAccessToken(std::function<void(QString)> callback)
     params.addQueryItem("client_id", client_id);
     // 客户端密钥
     params.addQueryItem("client_secret", client_secret);
-
+    // 发送POST请求，将参数转换为URL编码格式
+    QNetworkReply *reply = manager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
     // 连接网络请求完成信号到槽函数
-    QObject::connect(manager, &QNetworkAccessManager::finished,
-                     [callback](QNetworkReply* reply)
+    QObject::connect(reply, &QNetworkReply::finished,
+                     [callback, reply]()
     {
         // 读取服务器返回的所有数据
         QByteArray response = reply->readAll();
@@ -59,8 +63,7 @@ void getAccessToken(std::function<void(QString)> callback)
         reply->deleteLater();
     });
 
-    // 发送POST请求，将参数转换为URL编码格式
-    manager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
+
 }
 
 // 人脸搜索函数 - 在指定人脸库中搜索匹配的人脸
@@ -69,7 +72,7 @@ void getAccessToken(std::function<void(QString)> callback)
 int faceSearch(QString base64Image, QString token)
 {
     // 创建网络访问管理器
-    QNetworkAccessManager* manager = new QNetworkAccessManager;
+
 
     // 构建人脸搜索API的完整URL，包含访问令牌
     QString url = QString(
@@ -96,10 +99,10 @@ int faceSearch(QString base64Image, QString token)
 
     // 将JSON对象转换为文档
     QJsonDocument doc(json);
-
+    QNetworkReply *reply = manager->post(request, doc.toJson());
     // 连接网络请求完成信号
-    QObject::connect(manager, &QNetworkAccessManager::finished,
-                     [](QNetworkReply* reply)
+    QObject::connect(reply, &QNetworkReply::finished,
+                     [reply]()
     {   qDebug() << "Network error:" << reply->error() << reply->errorString();
         // 读取返回的识别结果
         QString result = reply->readAll();
@@ -133,7 +136,7 @@ int faceSearch(QString base64Image, QString token)
     });
 
     // 发送POST请求，将JSON数据作为请求体
-    manager->post(request, doc.toJson());
+
     return 0;
 
 }
@@ -141,7 +144,7 @@ void faceRegister(QString base64Image, QString token,
                   QString name, QString workId,
                   QString identity, QString imgPath, QString dept)
 {
-    QNetworkAccessManager* manager = new QNetworkAccessManager;
+
     qDebug() << "faceRegister is called" << endl;
     QNetworkRequest request(QUrl("https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add?access_token=" + token));
     QSslConfiguration config =QSslConfiguration::defaultConfiguration();

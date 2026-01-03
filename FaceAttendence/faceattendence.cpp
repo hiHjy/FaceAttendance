@@ -16,8 +16,7 @@ FaceAttendence::FaceAttendence(QWidget *parent)
     , ui(new Ui::FaceAttendence)
 {
     ui->setupUi(this);
-
-
+    manager = new QNetworkAccessManager(this);
     // ----------------------------------------------------------------------
     qRegisterMetaType<cv::Mat>("cv::Mat");
     self = this;
@@ -68,39 +67,6 @@ FaceAttendence::FaceAttendence(QWidget *parent)
         //faceSearch(jpgBase64, global_token);
     });
 
-
-
-}
-
-void FaceAttendence::workThreadConnection()
-{
-    connect(face_dect, &Work::sigFaceReady, this, [=](QString base64, cv::Mat frame) {
-        qDebug() << "connect faceSearch";
-        {
-            QMutexLocker loker(&this->frameSuccessMutex);
-            this->frame_success = frame.clone();
-
-        }
-        faceSearch(base64, global_token);
-        //        qDebug() << "frame：data： " << frame.data << endl;
-        //        qDebug() << "frame_success：data： " << frame_success.data << endl;
-        //        if (status == true) {
-        //            frame_success = frame;
-        //        }
-
-    });
-
-    connect(face_dect, &Work::sigFaceTrace, this, [=](int x, int y, bool status) {
-
-        if (status)
-            ui->head_cap_img->move(x, y);
-        else {
-
-            ui->head_cap_img->move(old_x, old_y);
-        }
-
-    });
-
     connect(this, &FaceAttendence::sigFaceCrop, this, [this](QImage img ){
 
         int size =  ui->head_image->width();   // 圆形头像的直径
@@ -115,18 +81,21 @@ void FaceAttendence::workThreadConnection()
         }
 
 
-//        this->setStatus(false);
+        //        this->setStatus(false);
 
         qDebug() << "sigFaceCrop::被调用";
 
     });
+
     connect(this, &FaceAttendence::sigFaceVerified, this, [=](UserInfo user){
         //ui->widget_2->setText("认证成功：" + name);
+        detectionSuccess = true;
         ui->widget_2->show();
         if (!user.valid) {
             qDebug() << "User not found. The user may not be registered" << endl;
 
         } else {
+
 
             stopCamera();
             ui->head_cap_img->hide();
@@ -147,16 +116,15 @@ void FaceAttendence::workThreadConnection()
                 return;
             }
 
-            QTimer::singleShot(7000, this, &FaceAttendence::startCamera);
+            QTimer::singleShot(5000, this, &FaceAttendence::startCamera);
 
 
 
         }
 
-        detectionSuccess = true; //程序执行到这里检测完成了，这个时候需要更新状态让检测线程再次启动
+        //程序执行到这里检测完成了，这个时候需要更新状态让检测线程再次启动
 
     });
-
     connect(this, &FaceAttendence::sigCropReady, this, [=](){
 
 
@@ -222,6 +190,41 @@ void FaceAttendence::workThreadConnection()
 
 
     });
+
+}
+
+void FaceAttendence::workThreadConnection()
+{
+    connect(face_dect, &Work::sigFaceReady, this, [=](QString base64, cv::Mat frame) {
+        qDebug() << "connect faceSearch";
+        {
+            QMutexLocker loker(&this->frameSuccessMutex);
+            this->frame_success = frame.clone();
+
+        }
+        faceSearch(base64, global_token);
+        //        qDebug() << "frame：data： " << frame.data << endl;
+        //        qDebug() << "frame_success：data： " << frame_success.data << endl;
+        //        if (status == true) {
+        //            frame_success = frame;
+        //        }
+
+    });
+
+    connect(face_dect, &Work::sigFaceTrace, this, [=](int x, int y, bool status) {
+
+        if (status)
+            ui->head_cap_img->move(x, y);
+        else {
+
+            ui->head_cap_img->move(old_x, old_y);
+        }
+
+    });
+
+
+
+
     qDebug() << "连接信号和槽函数";
 
 
@@ -400,7 +403,7 @@ void Work::run()
 
         //cv::rectangle(*this->frame, face, cv::Scalar(0, 255, 0), 2);
         emit sigFaceTrace(rect.x, rect.y, true);
-        qDebug() << "status：" << FaceAttendence::getInstance()->status.load() << "frame empty:" << FaceAttendence::getInstance()->frame_success.empty() << endl;
+        //qDebug() << "status：" << FaceAttendence::getInstance()->status.load() << "frame empty:" << FaceAttendence::getInstance()->frame_success.empty() << endl;
 
 
 
@@ -418,14 +421,14 @@ void Work::run()
 
 
 
-        static qint64 last = 0;
-        qint64 now = QDateTime::currentMSecsSinceEpoch();
-        if (now - last < 4000) {  // 2000 ms = 2秒
-            continue;
-        }
-        last = now;
-        static int counter = 0;
-        counter++;
+        //static qint64 last = 0;
+//        qint64 now = QDateTime::currentMSecsSinceEpoch();
+//        if (now - last < 4000) {  // 2000 ms = 2秒
+//            continue;
+//        }
+//        last = now;
+//        static int counter = 0;
+//        counter++;
 
         std::vector<uchar> buf;
         cv::imencode(".jpg", work_frame, buf);
@@ -438,10 +441,18 @@ void Work::run()
         //faceSearch(jpgBase64, global_token);
         emit sigFaceReady(jpgBase64, work_frame);
         FaceAttendence::getInstance()->detectionSuccess = false;
-        //防止重复检测
-        while (!FaceAttendence::getInstance()->detectionSuccess) {
 
-            usleep(500000); //降低cpu占用，检测线程睡眠500ms
+        /* ================================嵌入式极致优化=========================*/
+
+        //防止重复检测，另外加超时机制防止卡死
+        quint64 start = QDateTime::currentMSecsSinceEpoch();
+        while (!FaceAttendence::getInstance()->detectionSuccess && !isInterruptionRequested()) {
+            if (QDateTime::currentMSecsSinceEpoch() - start > 15000) {
+                qDebug("超时！可能网络错误或token过期");
+                FaceAttendence::getInstance()->detectionSuccess = true;
+                break;
+            }
+            usleep(100000); //降低cpu占用，检测线程睡眠500ms
         }
         qDebug() << "单次检测完成，开始新的一轮检测";
         // qDebug() << jpgBase64;

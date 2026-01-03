@@ -9,6 +9,7 @@
 #include <QMutex>
 #include <atomic>
 #include <QQuickWidget>
+#include <QNetworkAccessManager>
 using namespace cv;
 int faceSearch(QString base64Image, QString token);
 
@@ -19,6 +20,7 @@ class Work : public QThread {
     Q_OBJECT
 
 public:
+
     Work(QWidget *parent = nullptr, cv::Mat *frame = nullptr, cv::CascadeClassifier *cascade = nullptr, QMutex* frameMutex = nullptr);
     ~Work();
 
@@ -45,6 +47,7 @@ class FaceAttendence : public QMainWindow
 public:
     friend class Work;
     friend int faceSearch(QString base64Image, QString token);
+    friend void getAccessToken(std::function<void(QString)> callback);
     FaceAttendence(QWidget *parent = nullptr);
     ~FaceAttendence();
     //定时器事件
@@ -76,7 +79,7 @@ private:
     cv::Mat frame;
     cv::Mat frame_success;
     std::atomic_bool detectionSuccess{false};
-
+    QNetworkAccessManager* manager;
     static FaceAttendence* self;
     int old_x ;
     int old_y ;
