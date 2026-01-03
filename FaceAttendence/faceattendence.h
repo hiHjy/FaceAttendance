@@ -75,7 +75,7 @@ private:
     cv::CascadeClassifier cascade;//一级级联分类器
     cv::Mat frame;
     cv::Mat frame_success;
-    std::atomic_bool status{false};
+    std::atomic_bool detectionSuccess{false};
 
     static FaceAttendence* self;
     int old_x ;

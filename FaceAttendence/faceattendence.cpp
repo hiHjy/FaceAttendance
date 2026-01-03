@@ -115,7 +115,7 @@ void FaceAttendence::workThreadConnection()
         }
 
 
-        this->setStatus(false);
+//        this->setStatus(false);
 
         qDebug() << "sigFaceCrop::被调用";
 
@@ -147,11 +147,13 @@ void FaceAttendence::workThreadConnection()
                 return;
             }
 
-            QTimer::singleShot(5000, this, &FaceAttendence::startCamera);
+            QTimer::singleShot(7000, this, &FaceAttendence::startCamera);
 
 
 
         }
+
+        detectionSuccess = true; //程序执行到这里检测完成了，这个时候需要更新状态让检测线程再次启动
 
     });
 
@@ -331,14 +333,14 @@ FaceAttendence::~FaceAttendence()
 
 }
 
-void FaceAttendence::setStatus(bool v)
-{
+//void FaceAttendence::setStatus(bool v)
+//{
 
 
-    status.store(v);
-    qDebug() << "setStatus: "  << v << "当前线程:" << QThread::currentThread();
+//    status.store(v);
+//    qDebug() << "setStatus: "  << v << "当前线程:" << QThread::currentThread();
 
-}
+//}
 
 void Work::run()
 {
@@ -435,8 +437,15 @@ void Work::run()
         qDebug() << "Base64 长度：" << jpgBase64.length();
         //faceSearch(jpgBase64, global_token);
         emit sigFaceReady(jpgBase64, work_frame);
+        FaceAttendence::getInstance()->detectionSuccess = false;
+        //防止重复检测
+        while (!FaceAttendence::getInstance()->detectionSuccess) {
+
+            usleep(500000); //降低cpu占用，检测线程睡眠500ms
+        }
+        qDebug() << "单次检测完成，开始新的一轮检测";
         // qDebug() << jpgBase64;
-        usleep(100000);
+
 
     }
 
