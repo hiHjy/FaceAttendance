@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include "face_api.h"
 #include <QMetaType>
+#include "powermanager.h"
 Q_DECLARE_METATYPE(cv::Mat)
 
 FaceAttendence* FaceAttendence::self = nullptr;
@@ -17,6 +18,7 @@ FaceAttendence::FaceAttendence(QWidget *parent)
 {
     ui->setupUi(this);
     manager = new QNetworkAccessManager(this);
+    powerManager = new PowerManager(this);
     // ----------------------------------------------------------------------
     qRegisterMetaType<cv::Mat>("cv::Mat");
     self = this;
@@ -189,6 +191,15 @@ FaceAttendence::FaceAttendence(QWidget *parent)
         }
 
 
+    });
+
+    /* 电源管理 */
+    connect(powerManager, &PowerManager::powerStatusChange, this, [this](bool status) {
+        if (status) {
+            startCamera();
+        } else {
+            stopCamera();
+        }
     });
 
 }

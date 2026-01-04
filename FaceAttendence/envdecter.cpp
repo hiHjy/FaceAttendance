@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QThread>
 
-#define DEVICE "/dev/dht11"
+
 #define SOCKET_PATH "/tmp/dht11.sock"
 EnvDecter::EnvDecter(QObject *parent) : QObject(parent)
 {

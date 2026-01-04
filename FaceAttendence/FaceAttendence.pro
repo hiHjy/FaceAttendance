@@ -30,6 +30,7 @@ SOURCES += \
     main.cpp \
     faceattendence.cpp \
     netonlinechecker.cpp \
+    powermanager.cpp \
     record.cpp \
     register.cpp \
     systemmonitor.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     faceattendence.h \
     form.h \
     netonlinechecker.h \
+    powermanager.h \
     record.h \
     register.h \
     systemmonitor.h \

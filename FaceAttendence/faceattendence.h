@@ -39,7 +39,7 @@ signals:
 };
 
 
-
+class PowerManager;
 class FaceAttendence : public QMainWindow
 {
     Q_OBJECT
@@ -81,7 +81,7 @@ private:
     std::atomic_bool detectionSuccess{false};
     QNetworkAccessManager* manager;
     static FaceAttendence* self;
-
+    PowerManager *powerManager;
     int old_x ;
     int old_y ;
 

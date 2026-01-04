@@ -5,7 +5,7 @@
 #include "QDebug"
 #include <QFontDatabase>
 #include <QInputMethod>
-
+#include <powermanager.h>
 #include <QQuickWidget>
 int main(int argc, char *argv[])
 {
