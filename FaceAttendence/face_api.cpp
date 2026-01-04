@@ -129,6 +129,9 @@ int faceSearch(QString base64Image, QString token)
 //            FaceAttendence::getInstance()->setStatus(true);
 //            qDebug() << "faceSerch修改后status：" << FaceAttendence::getInstance()->status;
             emit FaceAttendence::getInstance()->sigCropReady();
+        } else {
+            FaceAttendence::getInstance()->detectionSuccess = false;
+
         }
 
         // 清理回复对象
