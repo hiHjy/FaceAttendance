@@ -183,6 +183,7 @@ void faceRegister(QString base64Image, QString token,
             QMessageBox::information(nullptr, "成功", "注册成功！");
 
             Register::getInstance()->on_Btn_Clear_clicked();
+            emit Register::getInstance()->registerSuccess();
 
         } else {
             QMessageBox::warning(nullptr, "错误", "注册失败：" + obj["error_msg"].toString());

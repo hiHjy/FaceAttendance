@@ -6,7 +6,7 @@
 #include "systemmonitor.h"
 #include <envdecter.h>
 #include <QThread>
-
+#include <QMessageBox>
 #define PERIOD 3000
 Widget_System::Widget_System(QWidget *parent) :
     QWidget(parent),
@@ -21,7 +21,7 @@ Widget_System::Widget_System(QWidget *parent) :
     connect(monitor, &SystemMonitor::updated, this, &Widget_System::updateStatus);
     //connect(envDector, &EnvDecter::envStatusUpdated, this, &Widget_System::envStatusUpdate);
     //envDector = new EnvDecter();
-/*===============================已弃用=======================================*/
+    /*===============================已弃用=======================================*/
     /* 将读取温度移动到线程去执行 */
 
 
@@ -33,24 +33,24 @@ Widget_System::Widget_System(QWidget *parent) :
     //timer->moveToThread(t);
 
     //移动到新线程的函数的槽函数会在新的线程执行
-  //  EnvDecter *decter = new EnvDecter(); //移动到新线程的对象不能有父亲否则会导致移动到新线程失败
-   // decter->moveToThread(t);
+    //  EnvDecter *decter = new EnvDecter(); //移动到新线程的对象不能有父亲否则会导致移动到新线程失败
+    // decter->moveToThread(t);
 
 
-//    //执行新的线程中的EnvDecter的槽函数
-//    connect(timer, &QTimer::timeout, decter, &EnvDecter::readEnvStatus);
+    //    //执行新的线程中的EnvDecter的槽函数
+    //    connect(timer, &QTimer::timeout, decter, &EnvDecter::readEnvStatus);
 
-//    //QvOerload<>::of(&QTimer::start) 当要用的槽函数有重载的时候就用这个QvOerload<重载的参数列表或无>::of(&类名::槽函数名)
-//    connect(t, &QThread::started, timer, QOverload<>::of(&QTimer::start));
-//    connect(decter, &EnvDecter::envStatusUpdated, this, &Widget_System::envStatusUpdate);
+    //    //QvOerload<>::of(&QTimer::start) 当要用的槽函数有重载的时候就用这个QvOerload<重载的参数列表或无>::of(&类名::槽函数名)
+    //    connect(t, &QThread::started, timer, QOverload<>::of(&QTimer::start));
+    //    connect(decter, &EnvDecter::envStatusUpdated, this, &Widget_System::envStatusUpdate);
 
 
 
     //由于移动到新线程的对象不能有父亲，所以不会被自动回收，所以必须连接个信号与槽去回收对象
-//    connect(t, &QThread::finished, timer, &QTimer::deleteLater);
-//    connect(t, &QThread::finished, decter, &EnvDecter::deleteLater);
-//    t->start();
-/*=====================================================================================*/
+    //    connect(t, &QThread::finished, timer, &QTimer::deleteLater);
+    //    connect(t, &QThread::finished, decter, &EnvDecter::deleteLater);
+    //    t->start();
+    /*=====================================================================================*/
     /*不需要挪到线程去执行了以上不要了*/
     envDector = new EnvDecter(this);
     connect(envDector, &EnvDecter::envStatusUpdated, this, &Widget_System::envStatusUpdate);
@@ -67,32 +67,75 @@ void Widget_System::updateStatus(QString Date, QString temp)
 {
     ui->lb_cpu_tem->setText(temp);
     ui->lb_sys_date->setText(Date);
+
+
 }
 
 void Widget_System::on_btn_poweroff_clicked()
 {
-    QProcess::startDetached("poweroff");
+
+    QMessageBox msg;
+    msg.setText("确认关机？关机后可能需要完全断电10s才能启动?");
+    msg.setWindowTitle("警告");
+    msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msg.setStyleSheet(  "QMessageBox {"
+                        "   background-color: #f0f0f0;"
+                        "   border: 3px solid #000000;"  // 蓝色边框，3像素宽
+                        "   border-radius: 8px;"         // 圆角
+                        "}");
+
+    int ret = msg.exec();
+    if (ret == QMessageBox::Yes) {
+
+        QProcess::startDetached("poweroff");
+    }
+
+
+
+
 }
 
 void Widget_System::on_btn_restart_clicked()
 {
-    QProcess::startDetached("reboot");
+//    int ret = QMessageBox::question(this, "警告", "确认重启?", QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+//    if (ret == QMessageBox::Yes) {
+
+//        QProcess::startDetached("reboot");
+//    }
+
+        QMessageBox msg;
+        msg.setText("确认重启?");
+        msg.setWindowTitle("警告");
+        msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msg.setStyleSheet(  "QMessageBox {"
+                            "   background-color: #f0f0f0;"
+                            "   border: 3px solid #000000;"  // 蓝色边框，3像素宽
+                            "   border-radius: 8px;"         // 圆角
+                            "}");
+
+        int ret = msg.exec();
+        if (ret == QMessageBox::Yes) {
+
+            QProcess::startDetached("reboot");
+        }
+
+
 }
 
 void Widget_System::netStatusUpdate(bool ok)
 {
-     qDebug() << "net ok:" << ok;
-     if (ok) {
-         ui->lb_net_status->setStyleSheet("color:green;");
-         ui->lb_net_status->setText("已连接");
-     } else {
-         ui->lb_net_status->setStyleSheet("color:red;");
-         ui->lb_net_status->setText("异常,请联系管理员");
-     }
+    qDebug() << "net ok:" << ok;
+    if (ok) {
+        ui->lb_net_status->setStyleSheet("color:green;");
+        ui->lb_net_status->setText("已连接");
+    } else {
+        ui->lb_net_status->setStyleSheet("color:red;");
+        ui->lb_net_status->setText("异常,请联系管理员");
+    }
 }
 
 void Widget_System::envStatusUpdate(QString temp, QString humidity)
 {
-       ui->lb_sensor_hum->setText(humidity);
-       ui->lb_sensor_tem->setText(temp);
+    ui->lb_sensor_hum->setText(humidity);
+    ui->lb_sensor_tem->setText(temp);
 }

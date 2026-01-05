@@ -20,7 +20,8 @@ public:
     ~Register();
 //   static Register* getInstance();
 
-
+signals:
+    void registerSuccess();
 public slots:
     void on_Btn_Clear_clicked();
 
@@ -30,7 +31,6 @@ public slots:
     static Register* getInstance();
     void on_Btn_Cap_clicked();
     void timerEvent(QTimerEvent *e) override;
-private slots:
     void on_Btn_Shot_clicked();
 
 private:
@@ -41,6 +41,7 @@ private:
     int timerID;
     cv::VideoCapture cap;
     cv::Mat image;
+    QString headFile;
 
 
 

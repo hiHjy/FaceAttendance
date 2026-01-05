@@ -17,7 +17,10 @@ Register::Register(QWidget *parent) :
 
     self = this;
 //DatabaseManager::getInstance()->initDataBase();
-
+    //只有注册成功后才保存图片
+    connect(this, &Register::registerSuccess, this, [this]() {
+         cv::imwrite(headFile.toUtf8().data(), image);
+    });
 
 }
 
@@ -167,9 +170,10 @@ void Register::timerEvent(QTimerEvent *e)
 
 void Register::on_Btn_Shot_clicked()
 {
-    QString headFile = QString("./data/%1.jpg").arg(QString(ui->Le_WorkID->text().toUtf8().toBase64()));
+
+    headFile = QString("./data/%1.jpg").arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss_zzz"));
     ui->Le_Path->setText(headFile);
-    cv::imwrite(headFile.toUtf8().data(), image);
+
     ui->Btn_Cap->setText("打开摄像头");
 
     killTimer(timerID);
